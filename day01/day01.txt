@@ -1,0 +1,72 @@
+刘沛霞 / 皮皮霞 QQ：2250 4321 65   
+
+一、JDK：一定要熟练！因为java的开发就需要依赖JDK中包含的JVM。
+	--1、下载安装
+	--2、配置环境变量
+		--JAVA_HOME：不存在的，需要新建。用来指定jdk的安装位置。
+		--PATH：已存在的，需要修改！！用来指定jdk中工具的位置。
+	--3、检查
+		--打开DOS窗口(Window+r)，运行DOS命令：java -version 如果显示了jdk版本号就成功。
+二、java开发工具
+	--1、Eclipse：免费的。
+	--2、IDEA：有收费版(旗舰版)，也有免费版(社区版，功能比较少)。
+三、Eclipse：集成了java开发的平台。
+	--1、workspace：指定你要把代码存放的位置		
+	--2、目录结构要求很严格
+		--创建工程
+			右键-new-other-java project-输入工程名称(全小写)-finish
+		--创建包
+			选中src-右键-new-package-输入包名(全小写+公司的域名倒着写)-finish
+		--创建类
+			选中包名-右键-new-Class-输入类名(符合驼峰规则)-finish			
+	--3、准备测试
+		--工具提供的万能快捷键：alt + /
+		--测试的快捷键：ctrl + f11
+
+	--4、再创建一个练习的工程day0101
+四、HelloWorld：
+	--1、注释：解释说明java代码的意思
+	--2、说明：
+		// 单行注释
+		/* 多行注释 */
+		/* 第一行用来描述这个类所在的包
+		 * package	是java的关键字，用来定义包
+		 * cn.tedu.hello	是包名--全小写+公司域名倒着写
+		 * ;	类似于。用来作为java语句的结束符
+		 */
+		package cn.tedu.hello;
+		/*第二行代码用来定义一个类
+		 * public		是java的关键字，用来修饰类的访问权限，是公开的。
+		 * class		是java的关键字，用来定义类
+		 * HelloWorld	是类名 -- 驼峰命名法/驼峰规则
+		 * { java代码 }	  一对一对的
+		 */
+		public class HelloWorld {
+			/*第三行代码用来定义一个主函数/主方法/main方法，用来作为程序的入口
+			 * public		是java的关键字，用来修饰主方法的访问权限，公开的
+			 * static		是java的关键字，用来修饰主方法是静态的
+			 * void			是java的关键字，用来修饰主方法是没有返回值的
+			 * main		是方法名(固定的)
+			 * ()			是方法的标志
+			 * String[] args  是方法的参数
+			 * {    java代码/方法体  }
+			 */
+			public static void main(String[] args) {
+				/*第四行代码用来，指定要向控制台输出打印的数据
+				 * System		发出一个系统指令
+				 * 	.				表示调用关系，调用系统提供的功能
+				 * out			要执行一个输出动作
+				 * println		打印后换行
+				 * ()				是方法的标志
+				 * "hello java"		 是方法的参数，用双引号把数据引起来--就是想要打印的数据
+				 *  ;				类似于。用来作为java语句的结束符
+				 */
+				System.out.println("hello java");
+			}
+			
+		}
+
+
+[作业]五、在自己的电脑上安装jdk、eclipse。
+[作业]六、把入门案例敲10遍。自己练习创建工程的过程。	
+

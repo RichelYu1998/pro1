@@ -1,0 +1,372 @@
+一、反射
+	--1、概念
+		反射通常用来获取.class文件中的所有信息。后续的学习中SSM底层都是反射。
+	--2、创建Student类	
+		package cn.tedu.reflection;
+		//提供一些类的资源
+		public class Student {
+		    //右键 - generate - constructor- ok(多个的话，按着ctrl选中)
+		    public Student() { }
+		    public Student(String name, int age) {
+		        this.name = name;
+		        this.age = age;
+		    }
+		    String name = "彭于晏";
+		    int age = 20 ;
+		    public void show(){
+		        System.out.println("show()...");
+		    }
+		    public void add(int a){
+		        System.out.println("add()..."+a);
+		    }
+		    //右键 - generate - toString - ok
+		    @Override
+		    public String toString() {
+		        return "Student{" +
+		                "name='" + name + '\'' +
+		                ", age=" + age +
+		                '}';
+		    }
+
+		}
+
+	--3、反射Class对象	
+		package cn.tedu.reflection;
+		//这个类用来模拟  底层，反射数据
+		public class Test1_Reflect {
+		    public static void main(String[] args) throws ClassNotFoundException {
+		        method();
+		    }
+		    //反射Class对象
+		    public static void method() throws ClassNotFoundException {
+		        //参数是类的全路径 ： 包名.类名
+		        Class<?> clazz1 = Class.forName("cn.tedu.reflection.Student");
+		        Class<?> clazz2 = Student.class ;
+		        Class<?> clazz3 = new Student().getClass() ;//new Student()是匿名对象
+
+		        System.out.println("clazz1 = " + clazz1);
+		        System.out.println("clazz2 = " + clazz2);
+		        System.out.println("clazz3 = " + clazz3);
+		    }
+		}
+
+	--4、反射构造方法
+		 //反射构造方法
+	    public static void method2() {
+	        //1、反射Class对象
+	        Class<?> clazz = Student.class ;
+	        //2、反射所有 的 构造方法们
+	        Constructor<?>[] cs = clazz.getConstructors() ;
+	        //3、遍历数据，获取每个构造方法
+	        for (Constructor  c  : cs) {//c就代表当前遍历到的构造方法
+	            //4、获取参数类型
+	            Class<?>[] cs2 =  c.getParameterTypes() ;
+	            System.out.println(Arrays.toString(cs2));
+	        }
+	    }		
+
+	--5、反射普通方法
+		//反射普通方法
+	    public static void method3() {
+	        //1、反射Class对象
+	        Class<?> clazz = new Student().getClass();
+	        //2、反射所有  方法们
+	        Method[] ms = clazz.getMethods() ;
+	        //3、反射获取每个方法
+	        for ( Method m : ms) {//m代表反射到的方法
+	            //获取方法名
+	            System.out.println( m.getName() );
+	            //4、获取方法参数类型
+	            Class<?>[] cs = m.getParameterTypes() ;
+	            System.out.println(Arrays.toString(cs));
+	        }
+	    }
+	--6、反射成员变量
+		//反射成员变量
+	    public static void method4() {
+	        try {
+	            //1、反射Class对象
+	            Class<?> clazz = Class.forName("cn.tedu.reflection.Student");
+	            //2、反射获取所有  成员变量们  -- 只能获取到public的
+	            Field[] fs = clazz.getFields();
+	            //3、遍历数组，获取每个成员变量
+	            for ( Field f :  fs) {//f代表得到的变量
+	                //获取变量名
+	                System.out.println( f.getName() );
+	                //获取变量的类型
+	                System.out.println( f.getType().getName() );
+	            }
+	        } catch (ClassNotFoundException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	--7、创建对象
+		//反射创建对象
+	    public static void method5() {
+	        try {
+	            //1、反射获取Class对象
+	            Class<?> clazz = Student.class;
+
+	            //2、创建对象
+	            Object obj = clazz.newInstance();//触发无参构造
+	            System.out.println("obj = " + obj);
+
+	            //3、触发含参构造创建对象--
+			//先指定要触发的是哪个重载形式的构造方法？--参数是形参的数据类型对应的Class对象
+	            Constructor<?> c = clazz.getConstructor(String.class, int.class);
+	            //指定创建对象时的实参name,age
+	            Object obj2 = c.newInstance("皮皮霞",23) ;
+	            System.out.println("obj2 = " + obj2);
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+二、练习
+	--1、创建Reflect.java
+		package cn.tedu.reflection;
+		public class Reflect {
+		    //构造方法
+		    public Reflect() {}
+		    public Reflect(String name) {
+		        this.name = name;
+		    }
+		    public Reflect(int age) {
+		        this.age = age;
+		    }
+		    public Reflect(String name, int age) {
+		        this.name = name;
+		        this.age = age;
+		    }
+		    //成员属性
+		    String name ;
+		    int age ;
+		    //get()/set()
+		    public String getName() {
+		        return name;
+		    }
+		    public void setName(String name) {
+		        this.name = name;
+		    }
+		    public int getAge() {
+		        return age;
+		    }
+		    public void setAge(int age) {
+		        this.age = age;
+		    }
+		    //普通
+		    public void show(){
+		        System.out.println("show()...");
+		    }
+		    private void show2(String a,int b){
+		        System.out.println("show2()..."+a+b);
+		    }
+		    //toString
+		    @Override
+		    public String toString() {
+		        return "Reflect{" +
+		                "name='" + name + '\'' +
+		                ", age=" + age +
+		                '}';
+		    }
+		}
+
+	--2、练习反射类中资源
+		package cn.tedu.reflection;
+
+
+		import java.lang.reflect.Constructor;
+		import java.lang.reflect.Field;
+		import java.lang.reflect.Method;
+		import java.util.Arrays;
+
+		//这个类用来测试  反射
+		public class Test2_Reflect {
+		    public static void main(String[] args) {
+		//        method();//反射Class对象
+		//        method2();//反射创建对象
+		//        method3();//反射成员变量
+		//        method4();//反射成员方法
+		        method5();//反射构造方法
+		    }
+		    //反射构造方法
+		    private static void method5() {
+		        //1、获取Class对象
+		        Class clazz = Reflect.class;
+		        //2、获取所有构造方法
+		        Constructor[] cs = clazz.getConstructors();
+		        //3、遍历数组，获取每一个构造方法
+		        for (Constructor c :cs) {
+		            //获取构造方法名称
+		            System.out.println( c.getName() );
+
+		            //获取参数类型
+		            Class[] cs2 = c.getParameterTypes();
+		            System.out.println(Arrays.toString(cs2));
+		        }
+
+		    }
+		    //反射成员方法
+		    private static void method4() {
+		        //1、获取Class对象
+		        Class clazz = Reflect.class;
+
+		        //2、获取所有的方法们  -- public
+		        Method[] ms = clazz.getMethods();
+		        //3、循环获取每个方法m
+		        for (Method m : ms) {
+		            //4、打印方法名
+		            System.out.println(m.getName());
+
+		            //5、获取方法的参数类型们
+		            Class<?>[] cs = m.getParameterTypes();
+		            System.out.println(Arrays.toString(cs));
+		        }
+		    }
+		    //反射成员变量
+		    private static void method3() {
+		        try {
+		            //获取Class对象
+		            Class<?> clazz = Class.forName("cn.tedu.reflection.Reflect");
+		            //获取所有成员变量  -- public
+		            Field[] fs = clazz.getFields();
+		            //获取每一个成员变量f
+		            for (Field f : fs) {
+		                System.out.println(f.getName());//打印变量名
+		                System.out.println(f.getType().getName());//打印变量类型
+		            }
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		    }
+
+		    private static void method2() {
+		        try {
+		            //获取Class对象
+		            Class clazz = Reflect.class;
+		            //实例化，触发了无参构造
+		            Object o = clazz.newInstance();
+
+		            //实例化，触发了String类型参数的构造
+		            Constructor c = clazz.getConstructor(String.class);
+		            //给String类型的构造方法传入实参
+		            Object o1 = c.newInstance("熊大");
+
+		            System.out.println("o = " + o);
+		            System.out.println("o1 = " + o1);
+
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		    }
+		    //获取Class对象
+		    private static void method() {
+		        try {
+		            //获取Class对象
+		            Class clazz1 = Reflect.class;
+		            Class clazz2 = new Reflect().getClass();
+		            Class clazz3 = Class.forName("cn.tedu.reflection.Reflect");
+		        } catch (ClassNotFoundException e) {
+		            e.printStackTrace();
+		        }
+		    }
+		}
+
+三、暴力反射
+	--1、通常，用来获取类里的 私有资源 。		
+	--2、Class中提供的常用方法
+		getDeclaredMethods() --又能获取public的也能获取private的
+		getDeclaredFields()  --又能获取public的也能获取private的
+		getDeclaredConstructors() --又能获取public的也能获取private的
+	--3、测试
+		package cn.tedu.reflection;
+
+		import java.lang.reflect.Field;
+		import java.lang.reflect.Method;
+
+		//这个类用来测试  暴力反射：主要是获取私有的
+		public class Test3_Reflect {
+		    public static void main(String[] args) {
+		//        method();//获取方法
+		        method2();//获取变量
+		    }
+		    //暴力反射获取私有变量
+		    public static void method2() {
+		        try {
+		            //1、获取Class对象
+		            Class clazz = Reflect.class;
+		            //2、暴力反射
+		            Field f = clazz.getDeclaredField("age");
+		            System.out.println( f.getType().getName());//int
+		            //3、设置私有可见
+		            f.setAccessible(true);
+		            //4、设置获取获取属性值
+		            Object obj = clazz.newInstance();
+		            f.set(obj,100);//设置变量值
+		            System.out.println(  f.get(obj) );//获取变量值
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		    }
+		    //暴力反射获取私有方法
+		    public static void method() {
+		        try {
+		            //1、获取Class对象
+		            Class clazz = Reflect.class;
+		            //2、暴力反射
+		            // 第一个参数是方法名,
+		            // 第二个参数是这个方法需要的类型的class对象
+		            Method m = clazz.getDeclaredMethod("show2", String.class, int.class);
+		            //3、设置访问权限，--私有可见
+		            m.setAccessible(true);
+		            //4、invoke()让方法执行起来
+		            //第一个参数是，要执行哪个对象的方法。第二个参数是，要给方法传入什么实参
+		            Object obj = clazz.newInstance();
+		            m.invoke(obj, "jack", 20);//执行方法，并传入参数
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		    }
+		}
+
+四、内部类
+	--1、如果B类的存在，就是为了让A类使用。这时，可以把B类放入A的内部，作为A类的特殊成员存在。
+	--2、内部类可以看做是外部类的特殊成员。
+		class A{//外部类
+			class B{//内部类
+				。。。。。。。。
+			}
+		}
+	--3、特点
+		-- 内部类可以  直接  使用 外部类的所有成员，包括私有的
+		-- 外部类  想要 访问 内部类资源  ，必须创建内部类对象来访问
+		-- 内部类的位置不同，名字和作用就不同。如果在成员位置叫成员内部类，如果在局部位置叫局部内部类。
+	--4、入门案例
+		package cn.tedu.reflection;
+		//这个类用来测试  内部类
+		public class Test4_InnerClass {
+		    public static void main(String[] args) {
+		        //1、创建内部类对象    ---    外部类名.内部类名   变量 =  外部类对象.内部类对象
+		        Outer.Inner oi = new Outer().new Inner();
+		        //2、调用内部类的资源
+		        oi.showIn();
+		        System.out.println( oi.age );
+		    }
+		}
+		class Outer{//外部类
+		    String name = "皮皮霞" ;
+		    public void showOut(){
+		        System.out.println("showOut()...");
+		    }
+		    class Inner{//内部类
+		        int age = 20 ;
+		        public void showIn(){
+		            System.out.println("showIn()...");
+		        }
+		    }
+		}
+
+
+
+
+	

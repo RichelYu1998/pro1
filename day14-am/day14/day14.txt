@@ -1,0 +1,155 @@
+一、序列化 / 反序列化 ：
+	--0、常用于服务器之间进行Java对象的数据传输，序列化成文件永久保存，反序列化						读取数据恢复成Java对象。
+	--1、序列化：
+		是指把程序中的Java对象 ，输出 ，永久的保存在磁盘中。用来在多个服务器直接传输Java对象的		信息。
+		需要使用工具类ObjectOutputStream完成序列化。
+         	--ObjectOutputStream(OutputStream out) 含参构造
+		 	--void writeObject(Object obj)
+               将指定的对象写入 ObjectOutputStream。 
+	--2、反序列化：
+		是指把磁盘中，已经被序列化好的文件。读取，恢复到程序中的过程。
+		需要使用工具类ObjectInputStream完成反序列化。
+			--ObjectInputStream(InputStream in) 含参构造
+			--Object readObject()
+     			 从 ObjectInputStream 读取对象，读取序列化数据。
+	--3、测试：
+		package cn.tedu.io;
+
+		import java.io.FileInputStream;
+		import java.io.FileNotFoundException;
+		import java.io.FileOutputStream;
+		import java.io.IOException;
+		import java.io.ObjectInputStream;
+		import java.io.ObjectOutputStream;
+		import java.io.Serializable;
+
+		//这个类用来测试 序列化  反序列化
+		public class Test1_Seria {
+			public static void main(String[] args) {
+		//		method() ; //序列化
+				method2();//反序列化
+			}
+			//反序列化：把磁盘中已经序列化好的文件，读取，恢复成Java对象
+			public static void method2() {
+				try {
+					//创建反序列化对象
+					ObjectInputStream in = new ObjectInputStream(
+												new FileInputStream("D:\\iotest\\1.txt"));
+					//开始反序列化
+					Object obj = in.readObject();
+					System.out.println(obj);//Student [name=皮皮霞, age=22]
+					
+					//释放资源
+					in.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+			}
+			//序列化：把Java对象， 输出 ，永久保存到磁盘中
+			public static void method() {
+				try {
+					Student s = new Student("皮皮霞",22);
+					//创建序列化对象
+					ObjectOutputStream out = new ObjectOutputStream(
+													new FileOutputStream("D:\\iotest\\1.txt")) ;
+					//开始序列化
+					out.writeObject(s);
+					
+					//释放资源
+					out.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} 
+				
+			}
+		}
+		//创建Student
+		//1、如果你的文件，想要支持序列化，必须实现Serializable接口，算是开启了序列化功能
+		//否则：java.io.NotSerializableException: cn.tedu.io.Student
+		class Student implements Serializable{
+			
+			//2、自动生成本文件的一个唯一标识，版本号id
+			private static final long serialVersionUID = 1L;
+			
+			//构造方法
+			public Student() {}
+			public Student(String name, int age) {
+				super();
+				this.name = name;
+				this.age = age;
+			}
+			private String name ;
+			private int age ;
+			//set() get()
+			public String getName() {
+				return name;
+			}
+			public void setName(String name) {
+				this.name = name;
+			}
+			public int getAge() {
+				return age;
+			}
+			public void setAge(int age) {
+				this.age = age;
+			} 
+			//toString()
+			@Override
+			public String toString() {
+				return "Student [name=" + name + ", age=" + age + "]";
+			}
+		}
+
+
+
+
+
+
+
+
+
+二、编码转换流：常用于解决字符流读写时的中文乱码现象
+	-- 简单描述中文乱码现象：由于保存时使用的码表和打开时使用的码表不一致造成的。
+	-- 测试
+		package cn.tedu.io;
+
+		import java.io.BufferedWriter;
+		import java.io.FileNotFoundException;
+		import java.io.FileOutputStream;
+		import java.io.OutputStream;
+		import java.io.OutputStreamWriter;
+		import java.io.Writer;
+
+		//这个类用来测试  编码转换流：可以把字节流转成字符流
+		//OutputStreamWriter：写出中文时，可能会产生乱码，需要你指定码表
+		//InputStreamReader：读取中文时，可能会产生乱码，需要你指定码表
+		public class Test2_Encoding {
+			public static void main(String[] args) {
+				try {
+					//1、提供字节流
+					OutputStream out = new FileOutputStream("D:\\iotest\\1.txt");
+					
+		//2、提供字符流 -- BufferedWriter的参数也需要是字符流，但是我们只有字节流，怎么转呢？--桥梁
+		//			Writer out2 =  new BufferedWriter(new OutputStreamWriter(out));//默认打开和保存都是gbk
+		//			Writer out2 =  new BufferedWriter(
+		//								new OutputStreamWriter(out,"ISO-8859-1"));//乱码
+					Writer out2 =  new BufferedWriter(new OutputStreamWriter(out,"gbk"));//中文乱码的解决方案
+					out2.write("大家好，我叫渣渣辉");
+					
+					//3、释放资源
+					out2.close();
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+			}
+		}
+
+三、
+
+
+
+
+[作业]安装IDEA开发工具并完成HelloWorld测试

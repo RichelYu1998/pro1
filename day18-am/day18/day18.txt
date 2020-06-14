@@ -1,0 +1,77 @@
+一、反射
+	--1、概念
+		反射通常用来获取.class文件中的所有信息。后续的学习中SSM底层都是反射。
+	--2、创建Student类	
+		package cn.tedu.reflection;
+		//提供一些类的资源
+		public class Student {
+		    //右键 - generate - constructor- ok(多个的话，按着ctrl选中)
+		    public Student() { }
+		    public Student(String name, int age) {
+		        this.name = name;
+		        this.age = age;
+		    }
+		    String name = "彭于晏";
+		    int age = 20 ;
+		    public void show(){
+		        System.out.println("show()...");
+		    }
+		    public void add(int a){
+		        System.out.println("add()..."+a);
+		    }
+		}
+
+	--3、反射Class对象	
+		package cn.tedu.reflection;
+		//这个类用来模拟  底层，反射数据
+		public class Test1_Reflect {
+		    public static void main(String[] args) throws ClassNotFoundException {
+		        method();
+		    }
+		    //反射Class对象
+		    public static void method() throws ClassNotFoundException {
+		        //参数是类的全路径 ： 包名.类名
+		        Class<?> clazz1 = Class.forName("cn.tedu.reflection.Student");
+		        Class<?> clazz2 = Student.class ;
+		        Class<?> clazz3 = new Student().getClass() ;//new Student()是匿名对象
+
+		        System.out.println("clazz1 = " + clazz1);
+		        System.out.println("clazz2 = " + clazz2);
+		        System.out.println("clazz3 = " + clazz3);
+		    }
+		}
+
+	--4、反射构造方法
+		 //反射构造方法
+	    public static void method2() {
+	        //1、反射Class对象
+	        Class<?> clazz = Student.class ;
+	        //2、反射所有 的 构造方法们
+	        Constructor<?>[] cs = clazz.getConstructors() ;
+	        //3、遍历数据，获取每个构造方法
+	        for (Constructor  c  : cs) {//c就代表当前遍历到的构造方法
+	            //4、获取参数类型
+	            Class<?>[] cs2 =  c.getParameterTypes() ;
+	            System.out.println(Arrays.toString(cs2));
+	        }
+	    }		
+
+	--5、反射普通方法
+		//反射普通方法
+	    public static void method3() {
+	        //1、反射Class对象
+	        Class<?> clazz = new Student().getClass();
+	        //2、反射所有  方法们
+	        Method[] ms = clazz.getMethods() ;
+	        //3、反射获取每个方法
+	        for ( Method m : ms) {//m代表反射到的方法
+	            //获取方法名
+	            System.out.println( m.getName() );
+	            //4、获取方法参数类型
+	            Class<?>[] cs = m.getParameterTypes() ;
+	            System.out.println(Arrays.toString(cs));
+	        }
+	    }
+	--6、反射成员变量
+
+		

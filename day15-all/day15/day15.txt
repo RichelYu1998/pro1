@@ -1,0 +1,435 @@
+一、List接口方法测试
+	--代码
+		package cn.tedu.collection;
+
+		import java.util.ArrayList;
+		import java.util.Iterator;
+		import java.util.List;
+		import java.util.ListIterator;
+
+		//这个类用来测试 List接口的使用：元素可重复  +  元素都有序  + 元素有索引
+		public class Test6_List {
+			public static void main(String[] args) {
+				//1、创建List对象
+				List<String> list = new ArrayList<>();
+				
+				//TODO 2、从Collection接口中继承来的方法
+				
+				//3、自己的特有方法
+				list.add("java");
+				list.add("php");
+				list.add("hadoop");
+				list.add("hadoop");
+				list.add(null);
+				list.add("hadoop");
+				
+				list.add(0,"皮皮霞");//按照索引添加元素
+				System.out.println(list.get(1));//获取指定索引存着的元素
+				System.out.println(list.indexOf("hadoop"));//获取第一次出现的索引值
+				System.out.println(list.lastIndexOf("hadoop"));//获取最后一次出现的索引值
+				
+				System.out.println(list.remove(1));//把指定索引的元素干掉
+				System.out.println(list.set(0,"刘沛霞"));//替换
+				System.out.println(list);
+				
+				List<String> list2 = list.subList(1, 4);//截取子List，含头不含尾[1,4)
+				System.out.println(list2);
+				
+				//--------  list集合的迭代  ---------------
+				//1、继承来的方法 Iterator<E> iterator() 返回按适当顺序在列表的元素上进行迭代的迭代器。 
+				Iterator<String> it = list.iterator() ;
+				while(it.hasNext() ) {//判断有下一个元素就返回true
+					String value = it.next() ;//用来获取元素并且把指针后移
+					System.out.println(value);
+				}
+				//2、List接口特有的ListIterator<E> listIterator()   返回此列表元素的列表迭代器（按适当顺序）。 
+				//listIterator()  iterator() 对比：iterator() 来自父接口。listIterator()是子接口的特有功能。
+				//区别是：子接口除了可以使用父接口的所有功能的同时，又做了功能扩展。不仅能向后顺序遍历而且可以向前逆向遍历。
+				ListIterator<String> it2 = list.listIterator() ;
+				while( it2.hasNext() ) {//向后判断，有没有元素
+					String value = it2.next() ;//获取后面的元素
+					System.out.println(value);
+				}
+				//3、下标遍历
+				for(int i = 0 ; i < list.size() ; i++) {//下标最大值是集合长度-1
+					System.out.println( list.get(i)  );//根据下标获取元素
+				}
+				//4、增强for  foreach
+				//for(遍历到的数据类型   变量名    :   数组 | Collection集合) { }
+				for(String   s    :   list) { 
+					System.out.println(s);
+				}
+				
+			}
+		}
+
+二、ArrayList
+	--1、特点
+		是List接口的实现类，拥有List接口的特点，可以重复，可以有序，有索引。
+		底层使用数组实现。方便于查询业务。
+	--2、创建对象
+		ArrayList() 
+          	构造一个初始容量为 10 的空列表。
+	--3、测试方法
+		package cn.tedu.collection;
+
+		import java.util.ArrayList;
+
+		//这个类用例测试  ArrayList
+		public class Test1_ArrayList {
+			public static void main(String[] args) {
+				//TODO 1、创建ArrayList对象
+				ArrayList<Integer> al = new ArrayList<>();
+				//TODO 2、调用方法
+				al.add(1);
+				al.add(2);
+				al.add(3);
+				al.add(4);
+				al.add(100);//底层会完成自动装箱的过程，把基本类型的值变成包装类型，存入集合中
+				//remove()可以按照下标删除，也可以直接指定元素值
+				System.out.println(  al.remove(2)  );//按照下标删
+				//想要直接删除数字100--需要删除包装类型的100
+				System.out.println(  al.remove( Integer.valueOf(100) ) );
+				System.out.println(al);
+				
+			}
+			
+		}
+
+三、LinkedList
+	--1、特点
+		List接口的实现类，拥有List接口的特点，可以重复，可以有索引，有序。
+		底层是一个链表的实现。不适用于查询，适用于增删业务。
+	--2、创建对象
+		LinkedList() 
+           构造一个空列表。
+	--3、特有方法
+		void addFirst(E e) 
+          将指定元素插入此列表的开头。 
+		void addLast(E e) 
+		          将指定元素添加到此列表的结尾。 
+		E removeFirst() 
+		         移除并返回此列表的第一个元素。 
+		E removeLast() 
+		          移除并返回此列表的最后一个元素。
+		E getFirst() 
+		          返回此列表的第一个元素。 
+		E getLast() 
+		          返回此列表的最后一个元素。         
+		E element() 
+		          获取但不移除此列表的头（第一个元素）。 
+		boolean offer(E e) 
+		          将指定元素添加到此列表的末尾（最后一个元素）。 
+		 boolean offerFirst(E e) 
+		          在此列表的开头插入指定的元素。 
+		 boolean offerLast(E e) 
+		          在此列表末尾插入指定的元素。 
+		 E peek() 
+		          获取但不移除此列表的头（第一个元素）。 
+		 E peekFirst() 
+		          获取但不移除此列表的第一个元素；如果此列表为空，则返回 null。 
+		 E peekLast() 
+		          获取但不移除此列表的最后一个元素；如果此列表为空，则返回 null 
+		 E poll() 
+		          获取并移除此列表的头（第一个元素） 
+		 E pollFirst() 
+		          获取并移除此列表的第一个元素；如果此列表为空，则返回 null。 
+		 E pollLast() 
+		          获取并移除此列表的最后一个元素；如果此列表为空，则返回 null。 
+		 E pop() 
+		          从此列表所表示的堆栈处弹出一个元素。 
+		 void push(E e) 
+		          将元素推入此列表所表示的堆栈。 
+ 
+	--4、测试	
+		package cn.tedu.collection;
+
+		import java.util.LinkedList;
+
+		//这个类用例测试  LinkedList
+		public class Test2_LinkedList {
+			public static void main(String[] args) {
+				//1、创建LinkedList对象
+				LinkedList<Integer> ll = new LinkedList<>() ;
+				//TODO 2、继承来的方法调用
+				ll.add(1);
+				ll.add(2);
+				ll.add(3);
+				ll.add(4);
+				ll.add(5);
+				
+				//3、特有方法
+				ll.addFirst(99); //添加首元素
+				ll.addLast(100);//添加尾元素
+				System.out.println(ll);
+				
+				System.out.println( ll.getFirst() );//获取首元素
+				System.out.println( ll.getLast() );//获取尾元素
+				
+				System.out.println( ll.removeFirst() );//移除首元素
+				System.out.println( ll.removeLast() );//移除尾元素
+				System.out.println(ll);
+			}
+		}
+
+
+
+四、Set接口
+	--1、概念
+		一个不包含重复元素的 collection。并且最多包含一个 null 元素。
+	--2、特点
+		元素不重复
+		元素无序
+		元素没索引
+	--3、常用方法
+		参考网页笔记
+	--4、测试
+		package cn.tedu.collection;
+
+		import java.util.HashSet;
+		import java.util.Iterator;
+		import java.util.Set;
+
+		//这个类用来测试  Set接口：元素不能重复 +  元素是没有下标的 + 元素无序
+		public class Test3_Set {
+			public static void main(String[] args) {
+				//1、创建对象
+				Set<Integer> set = new HashSet<>();
+				
+				//TODO 2、常用方法
+				set.add(1);
+				set.add(3);
+				set.add(2);
+				
+				set.add(1);
+				set.add(2);
+				
+				//set中不能存放重复元素，常用来去重！！
+				System.out.println(set);
+				
+				//3、迭代
+				Iterator<Integer> it = set.iterator() ;
+				while(it.hasNext()) {//判断是否有下一个元素
+					Integer value = it.next() ;//获取元素并把指针后移
+					System.out.println(value);
+				}
+				//foreach  for(获得的数据类型   遍历名  :   数组|Collection集合 ){   } 
+				for(Integer in :  set) {
+					System.out.println(in);
+				}
+				
+			}
+		}
+五、HashSet实现类
+	--1、概念
+		HashSet是Set接口的实现类，可以使用Set接口的所有功能。
+	     拥有Set接口的特点，数据无序，数据不重复，数据没有索引。
+	--2、特点
+		HashSet底层是哈希表/散列表。实际上底层维护了一个HashMap。
+	--3、创建对象
+		HashSet() 
+         	构造一个新的空 set，其底层 HashMap 实例的默认初始容量是 16，加载因子是 0.75。
+	--4、常用方法
+		同Set接口
+	--5、测试
+		略，同Test3_Set
+	--6、利用Set给自定义对象去重
+		--源码摘抄：HashMap中634行显示。必须满足以下判断条件，才能给自定义对象去重。
+			if (p.hash == hash &&
+                ((k = p.key) == key || (key != null && key.equals(k))))
+		--代码
+			package cn.tedu.collection;
+			import java.util.HashSet;
+
+			//这个类用来测试  利用set集合去重
+			//总结：
+			//1、set集合常用于去重
+			//2、如果想利用set集合给自定义对象去重。需要同时提供重写的hashCode()  和  equals()  ！！！
+			//3、重写hashCode()：是为了让底层运算哈希值时，可以根据对象的属性值运算。
+					//如果两个对象的属性值一样，即将得到相同的hash值
+			//4、重写equals()：是为了让底层在判断两个对象是否相等时，可以根据对象间的属性值判断。
+					//如果两个对象的属性值一样，就认为是相等的，让equals()返回true
+			public class Test5_HashSet2 {
+				public static void main(String[] args) {
+					//1、创建HashSet对象
+					HashSet<Student> set = new HashSet<>();
+					Student s1 = new Student("jack",18);
+					Student s2 = new Student("rose",20);
+					Student s3 = new Student("tony",30);
+					//2、加入set中
+					set.add(s1);
+					set.add(s2);
+					set.add(s3);
+					//3、set集合不是可以去重吗？-- 能不能把自定义的对象去重呢？-- 暂时没去重！！
+					Student s4 = new Student("jack",18);
+					//4、怀疑add()在添加自定义的对象时，没有根据属性去重！！
+			//if (p.hash == hash && ((k = p.key) == key || (key != null && key.equals(k))))
+					//5、为了使两个对象间的hash值一致，我们需要把只要new一次就计算一个hash值这种默认实现方式改掉。
+					//这时，需要重写hashCode()让此方法运算出来的hash值可以根据对象的属性值运算。
+					set.add(s4);
+					System.out.println(s1.hashCode());
+					System.out.println(s4.hashCode());
+					
+					System.out.println(set);
+				}
+			}
+			//创建Student类
+			class Student{
+				public Student() {}
+				public Student(String name, int age) {
+					super();
+					this.name = name;
+					this.age = age;
+				}
+				
+				private String name ;
+				private int age;
+				
+				public String getName() {
+					return name;
+				}
+				public void setName(String name) {
+					this.name = name;
+				}
+				public int getAge() {
+					return age;
+				}
+				public void setAge(int age) {
+					this.age = age;
+				}
+				@Override
+				public String toString() {
+					return "Student [name=" + name + ", age=" + age + "]";
+				}
+				//右键-source-generator equals() and hashCode()-ok
+				
+				//5、为了使两个对象间的hash值一致，我们需要把只要new一次就计算一个hash值这种默认实现方式改掉。
+				//这时，需要重写hashCode()让此方法，运算出来的hash值可以根据对象的属性值运算。
+				@Override
+				public int hashCode() {
+					final int prime = 31;
+					int result = 1;
+					result = prime * result + age;
+					result = prime * result + ((name == null) ? 0 : name.hashCode());
+					return result;
+				}
+				//6、为了让两个对象间，比较属性值，需要提供重写的equals()
+				@Override
+				public boolean equals(Object obj) {
+					if (this == obj)
+						return true;
+					if (obj == null)
+						return false;
+					if (getClass() != obj.getClass())
+						return false;
+					Student other = (Student) obj;
+					if (age != other.age)
+						return false;
+					if (name == null) {
+						if (other.name != null)
+							return false;
+					} else if (!name.equals(other.name))
+						return false;
+					return true;
+				}
+				
+				
+				
+			}
+
+六、Map接口
+	--1、概述
+		Map接口也是集合的一种形式，只不过和Collection接口没有关系。
+		Map接口包含两个实现类，重要学HashMap。里面存的数据都是键值对。
+	--2、特点
+		Map里的数据都是K,V的格式
+		Map里的key不能重复，如果key重复，会把value覆盖掉
+		Map也是无序
+		Map里的value可以根据key获取
+	--3、方法	
+		同网页笔记。
+	--4、测试	
+		package cn.tedu.collection;
+
+		import java.util.Collection;
+		import java.util.HashMap;
+		import java.util.Map;
+		import java.util.Map.Entry;
+		import java.util.Set;
+
+		//这个类用来测试 Map接口：数据无序 + key不能重复如果重复value会被覆盖
+		public class Test6_Map {
+			public static void main(String[] args) {
+				//1、创建Map对象
+				Map<Integer,String> map = new HashMap<>();
+				//2、常用方法
+				map.put(9527, "唐伯虎") ;
+				map.put(9529, "钟南山") ;
+				map.put(9530, "袁隆平") ;
+				map.put(9528, "如花") ;
+				map.put(9528, "刘沛霞") ;//key相同，value会被覆盖
+				System.out.println(map);
+		//		map.clear();
+				System.out.println( map.containsKey(9528) );//判断是否包含指定的key
+				System.out.println( map.containsValue("tony") );//判断是否包含指定的value
+				System.out.println( map.equals("tony") );//判断是否相等
+				System.out.println( map.get(9527) );//根据key获取对应的value
+				System.out.println( map.hashCode());//获取map在内存中的哈希码值
+				System.out.println( map.isEmpty());//判断是否为空
+				System.out.println( map.remove(9528));//根据key删除记录，并返回对应value
+				System.out.println( map.size());//获取集合的长度
+				Collection<String> values = map.values() ;//把map集合的value们存入Collection中
+				System.out.println(values);
+				
+				//3、迭代map集合  -----  需要把map转成set
+				//Set<K> keySet() --把key存入set集合
+				Set<Integer> set = map.keySet() ;
+				for (Integer key : set) {//遍历set得到每个key
+					String value = map.get(key) ;//拿着key去map里找value
+					System.out.println(key + "：："  +value);
+				}
+				
+				//Set<Map.Entry<K,V>> entrySet() ---把整条记录封装成Entry对象存入set集合
+				Set<Entry<Integer, String>> set2 = map.entrySet() ; 
+				for (Entry<Integer, String> entry : set2) {//遍历set得到每个Entry
+					Integer key = entry.getKey();//获取Entry的key
+					String value = entry.getValue();//获取Entry的value
+					System.out.println(key + "~~~" +value);
+				}
+			}
+		}
+
+七、HashMap实现类
+	--1、特点
+		同Map接口的特点。
+！！ --2、HashMap的原理：HashMap底层是一个Entry数组，当存放数据时会根据hash算法计算数据的存放位置。算法：hash(key)%n，n就是数组的长度。当计算的位置没有数据时，就直接存放，当计算的位置有数据时也就是发生hash冲突的时候/hash碰撞时，采用链表的方式来解决的，在对应的数组位置存放链表的头结点。对链表而言，新加入的节点会从头结点加入。
+	--3、创建对象
+		HashMap() 
+          构造一个具有默认初始容量 (16) 和默认加载因子 (0.75) 的空 HashMap。
+    --4、方法
+    	同Map接口
+    --5、测试
+    	package cn.tedu.collection;
+
+		import java.util.HashMap;
+
+		//这个类用来测试 HashMap
+		public class Test7_HashMap {
+			public static void main(String[] args) {
+				//1、创建HashMap对象---底层会自动开辟初始空间是16个对象位置，并且分配上限率(加载因子)0.75。会自动扩容
+		//		Constructs an empty <tt>HashMap</tt> with the default initial capacity
+		//	    (16) and the default load factor (0.75).
+				HashMap map = new HashMap() ;
+				
+				//TODO 2、调用方法
+				
+				
+				
+			}
+		}
+
+[预习]字符串中的字符统计
+[总结]IO 、集合 
+[作业]自己安装IDEA开发工具并完成HelloWorld测试
+
+	

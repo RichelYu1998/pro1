@@ -1,0 +1,297 @@
+一、内部类
+	--1、入门案例
+		package cn.tedu.reflection;
+		//这个类用来测试  内部类
+		public class Test4_InnerClass {
+		    public static void main(String[] args) {
+		        //1、创建内部类对象    ---    外部类名.内部类名   变量 =  外部类对象.内部类对象
+		        Outer.Inner oi = new Outer().new Inner();
+		        //2、调用内部类的资源
+		//        oi.showIn();
+		//        System.out.println( oi.age );
+
+		        new Outer().showOut();//触发外部类方法showOut()
+		    }
+		}
+		class Outer{//外部类
+		    private String name = "皮皮霞" ;
+		    public void showOut(){
+		        //在外部类类  调用  内部类 资源  ---  不可以直接用！！创建内部类对象来调用！！
+		        new Inner().showIn();
+		        System.out.println( new Inner().age  );
+
+		        System.out.println("showOut()...");
+		    }
+
+		    class Inner{//内部类
+		        int age = 20 ;
+		        public void showIn(){
+		            //在内部类里  可以使用 外部类的资源吗   -- 可以！！
+		//            showOut();
+		//            System.out.println("name = " + name);
+		            System.out.println("showIn()...");
+		        }
+		    }
+		}
+
+
+
+
+	
+	--2、成员内部类被private修饰或者static修饰
+		package cn.tedu.innerclass;
+
+		//这个类用来测试 内部类
+		public class Test1_Inner {
+		    public static void main(String[] args) {
+		        //创建内部类对象，使用内部类资源
+		//        Outer.Inner oi = new Outer().new Inner() ;  //2、因为内部类被Private，无法直接new
+		//        oi.showIn();
+		        //4、触发showOut()
+		        new Outer().showOut();
+		        //6、使用静态的内部类Inner2的资源  --  可以直接通过外部类名.内部类名来定位内部类
+		        Outer.Inner2 oi = new Outer.Inner2() ;
+		        oi.showIn2();
+		        //7、访问静态内部类里  静态方法
+		        Outer.Inner2.showIn2();
+		    }
+		}
+		class Outer{//外部类
+		    String name ;
+		    public void showOut(){
+		        //3、间接访问showIn()
+		        new Inner().showIn();
+		        System.out.println("showOut()...");
+		    }
+		    //5、内部类被static修饰
+		    static class Inner2{
+		        int count = 10 ;
+		       static public void showIn2(){
+		            System.out.println("showIn2()...");
+		        }
+		    }
+		    //1、在成员位置的内部类，叫成员内部类。可以被private修饰，也可以被static修饰
+		    private class Inner{//内部类
+		        int age ;
+		        public void showIn(){
+		            System.out.println("showIn()...");
+		        }
+		    }
+		}
+
+	--3、匿名内部类！！！
+		通常匿名内部类配合匿名对象使用。
+		package cn.tedu.innerclass;
+		//这个类用来测试 匿名内部类
+		public class Test2_InnerClass {
+		    public static void main(String[] args) {
+		        //new Inter()，相当于创建了一个接口的实现类的对象，只不过是匿名对象。只能执行一个任务！！
+		        new Inter(){//匿名内部类
+		            @Override
+		            public void save() {
+		                System.out.println("save()...");
+		            }
+		            @Override
+		            public void get() {
+		                System.out.println("get()...");
+		            }
+		        }.save();//调用指定方法
+
+		         Inter in = new Inter(){//匿名内部类  ，给匿名对象起个名字，就可以执行多个任务了！！
+		            @Override
+		            public void save() {
+		                System.out.println("save()...");
+		            }
+		            @Override
+		            public void get() {
+		                System.out.println("get()...");
+		            }
+		        };
+		        in.save();
+		        in.get();
+		    
+
+		        new Demo(){//就相当于创建了抽象类的对象
+		            @Override
+		            public void update() {
+		                System.out.println("update()...");
+		            }
+		        }.update();//调用指定方法
+		    }
+		}
+		abstract class Demo{
+		   public abstract void update() ;
+		   public void show(){  System.out.println("show()..."); }
+		}
+		interface Inter{
+		    void save() ;
+		    void get() ;
+		}
+
+
+二、Socket编程/网络编程
+	--1、概念
+		用来解决网络中数据传输的方案，本质上，是把数据抽象成IO流的形式在网络中传输。
+	--2、Socket编程中，包含两个端。一个是服务器端，一个是客户端。
+	--3、服务器端常用来：负责接收客户端发来的数据  +  给客户端做出响应
+	--4、客户端常用来：接收服务器发回来的数据  +  不断的连接服务器给服务器发数据
+		
+三、ServerSocket
+	--1、概念
+		此类实现服务器套接字。服务器套接字等待请求通过网络传入。它基于该请求执行某些		操作，然后可能向请求者返回结果。
+	--2、创建对象
+		ServerSocket(int port) 
+	          创建绑定到特定端口的服务器套接字。
+	--3、常用方法
+		Socket accept() 
+          	侦听并接受到此套接字的连接。 
+		void close() 
+		    关闭此套接字。 
+四、Socket
+	--1、概念
+		此类实现客户端套接字（也可以就叫“套接字”）。套接字是两台机器间通信的端点。
+	--2、创建对象
+		Socket(String host, int port) 
+          	创建一个流套接字并将其连接到指定主机上的指定端口号。
+	--3、常用方法
+		void close() 
+          	关闭此套接字。 
+		InputStream getInputStream() 
+		    返回此套接字的输入流。 
+		OutputStream getOutputStream() 
+		    返回此套接字的输出流。 
+五、入门案例
+	--1、服务器端
+		package cn.tedu.net;
+
+		import java.io.IOException;
+		import java.io.InputStream;
+		import java.io.OutputStream;
+		import java.net.ServerSocket;
+		import java.net.Socket;
+
+		//这个类用来测试  网络通信服务器端
+		//服务器端：
+		// 负责接收客户端发来的连接请求
+		// 并给客户端做出响应
+		//需求：
+		//服务器端接收客户端发来的hello
+		//并给客户端响应world
+		public class Server {
+		    public static void main(String[] args) throws IOException {
+		        //1、启动服务器--是指在8000端口号的位置，等待客户端来连接
+		        //端口号包含：0~65535，其中0~1024被系统占用
+		        ServerSocket server = new ServerSocket(8000);
+		        System.out.println("服务器已启动！");
+		        //2、接收客户端发来的连接请求--并建立数据连接的通道
+		        //阻塞方法 --- 一直死等客户端的连接
+		        Socket socket = server.accept();
+		        System.out.println("与客户端连接成功！");
+		        //3、读取客户端发来的数据
+		        InputStream in = socket.getInputStream();
+		        for (int i = 0; i < 5; i++) {
+		           int b =  in.read() ;
+		           char c = (char) b ;//想读取字符本身
+		           System.out.print(c);//同行展示
+		        }
+
+		        //TODO 4、服务器给客户端返回数据
+		        OutputStream out = socket.getOutputStream();
+		        out.write("world".getBytes());
+		        out.flush();
+
+		    }
+		}
+
+	--2、客户端
+		package cn.tedu.net;
+
+		import java.io.IOException;
+		import java.io.InputStream;
+		import java.io.OutputStream;
+		import java.net.Socket;
+
+		//这个类用来测试  网络通信客户端
+		//客户端：
+		// 负责接收服务器发回来的数据
+		//并给服务器发送数据
+		public class Client {
+		    public static void main(String[] args) throws IOException {
+		        //1、尝试连接服务器 -- 同时指定服务器的ip和端口号
+		        //127.0.0.1是本机的ip地址。工作中，要写真实的服务器的ip地址
+		        Socket socket =
+		               new Socket("127.0.0.1",8000);
+
+		        //2、给服务器发送数据--对客户端是out,对服务器是in
+		        OutputStream out = socket.getOutputStream();
+		        out.write("hello".getBytes());//参数是为了把字符串转成byte[]
+		        out.flush();//刷出去
+
+		        //TODO 3、读取服务器发回来的数据
+		        InputStream in = socket.getInputStream();
+		        for (int i = 0; i < 5; i++) {
+		            //把read()返回值从int转成char类型
+		            char c = (char) in.read();
+		            System.out.print(c);//同行展示
+		        }
+
+		    }
+		}
+六、练习
+	--需求：客户端给服务器发送来一行数据，服务器接收到后，把这行数据再返回给客户端
+	--服务器端：
+		package cn.tedu.net;
+
+		import java.io.*;
+		import java.net.ServerSocket;
+		import java.net.Socket;
+		import java.util.Scanner;
+		//客户端给服务器发送来一行数据，服务器接收到后，把这行数据再返回给客户端
+		public class Server2 {
+		    public static void main(String[] args) throws IOException {
+		        //1、启动服务器
+		        ServerSocket s = new ServerSocket(8888);
+		        //2、获取客户端的连接，并建立通信通道
+		        Socket ss = s.accept();
+		        //3、根据socket获取  双向的字节流
+		        InputStream in = ss.getInputStream();
+		        OutputStream out = ss.getOutputStream();
+
+		        //4、把字节的读写流 转成 字符读写流。
+		        // BufferedReader/PrintWriter按行读写的解决方案。
+		        BufferedReader in2 = new BufferedReader(new InputStreamReader(in)) ;
+		        PrintWriter out2 = new PrintWriter(new OutputStreamWriter(out)) ;
+
+		        //5、向客户端写出 一行数据
+		        String input = new Scanner(System.in).nextLine();
+		        out2.println(input);//写出后换行
+		        out2.flush();//刷新
+
+		    }
+		}
+
+	
+	--客户端：
+		package cn.tedu.net;
+
+		import java.io.*;
+		import java.net.Socket;
+
+		public class Client2 {
+		    public static void main(String[] args) throws IOException {
+		        //1、连接指定的服务器
+		        Socket s = new Socket("127.0.0.1", 8888);
+		        //2、根据socket获取 双向的字节流
+		        OutputStream out = s.getOutputStream();
+		        InputStream in = s.getInputStream();
+		        //3、把字节的读写流 转成 字符读写流。
+		        // BufferedReader/PrintWriter按行读写的解决方案。
+		        BufferedReader in2 = new BufferedReader(new InputStreamReader(in));
+		        PrintWriter out2 = new PrintWriter(new OutputStreamWriter(out));
+
+		        //4、读取，服务器发回来的数据
+		        String line = in2.readLine();//读一行，如果没数据，readLine()返回null
+		        System.out.println(line);
+
+		    }
+		}

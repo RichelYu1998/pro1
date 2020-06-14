@@ -1,0 +1,139 @@
+一、内部类
+	--1、入门案例
+		package cn.tedu.reflection;
+		//这个类用来测试  内部类
+		public class Test4_InnerClass {
+		    public static void main(String[] args) {
+		        //1、创建内部类对象    ---    外部类名.内部类名   变量 =  外部类对象.内部类对象
+		        Outer.Inner oi = new Outer().new Inner();
+		        //2、调用内部类的资源
+		//        oi.showIn();
+		//        System.out.println( oi.age );
+
+		        new Outer().showOut();//触发外部类方法showOut()
+		    }
+		}
+		class Outer{//外部类
+		    private String name = "皮皮霞" ;
+		    public void showOut(){
+		        //在外部类类  调用  内部类 资源  ---  不可以直接用！！创建内部类对象来调用！！
+		        new Inner().showIn();
+		        System.out.println( new Inner().age  );
+
+		        System.out.println("showOut()...");
+		    }
+
+		    class Inner{//内部类
+		        int age = 20 ;
+		        public void showIn(){
+		            //在内部类里  可以使用 外部类的资源吗   -- 可以！！
+		//            showOut();
+		//            System.out.println("name = " + name);
+		            System.out.println("showIn()...");
+		        }
+		    }
+		}
+
+
+
+
+	
+	--2、成员内部类被private修饰或者static修饰
+		package cn.tedu.innerclass;
+
+		//这个类用来测试 内部类
+		public class Test1_Inner {
+		    public static void main(String[] args) {
+		        //创建内部类对象，使用内部类资源
+		//        Outer.Inner oi = new Outer().new Inner() ;  //2、因为内部类被Private，无法直接new
+		//        oi.showIn();
+		        //4、触发showOut()
+		        new Outer().showOut();
+		        //6、使用静态的内部类Inner2的资源  --  可以直接通过外部类名.内部类名来定位内部类
+		        Outer.Inner2 oi = new Outer.Inner2() ;
+		        oi.showIn2();
+		        //7、访问静态内部类里  静态方法
+		        Outer.Inner2.showIn2();
+		    }
+		}
+		class Outer{//外部类
+		    String name ;
+		    public void showOut(){
+		        //3、间接访问showIn()
+		        new Inner().showIn();
+		        System.out.println("showOut()...");
+		    }
+		    //5、内部类被static修饰
+		    static class Inner2{
+		        int count = 10 ;
+		       static public void showIn2(){
+		            System.out.println("showIn2()...");
+		        }
+		    }
+		    //1、在成员位置的内部类，叫成员内部类。可以被private修饰，也可以被static修饰
+		    private class Inner{//内部类
+		        int age ;
+		        public void showIn(){
+		            System.out.println("showIn()...");
+		        }
+		    }
+		}
+
+	--3、匿名内部类！！！
+		通常匿名内部类配合匿名对象使用。
+		package cn.tedu.innerclass;
+		//这个类用来测试 匿名内部类
+		public class Test2_InnerClass {
+		    public static void main(String[] args) {
+		        //new Inter()，相当于创建了一个接口的实现类的对象，只不过是匿名对象。只能执行一个任务！！
+		        new Inter(){//匿名内部类
+		            @Override
+		            public void save() {
+		                System.out.println("save()...");
+		            }
+		            @Override
+		            public void get() {
+		                System.out.println("get()...");
+		            }
+		        }.save();//调用指定方法
+
+		         Inter in = new Inter(){//匿名内部类  ，给匿名对象起个名字，就可以执行多个任务了！！
+		            @Override
+		            public void save() {
+		                System.out.println("save()...");
+		            }
+		            @Override
+		            public void get() {
+		                System.out.println("get()...");
+		            }
+		        };
+		        in.save();
+		        in.get();
+		    
+
+		        new Demo(){//就相当于创建了抽象类的对象
+		            @Override
+		            public void update() {
+		                System.out.println("update()...");
+		            }
+		        }.update();//调用指定方法
+		    }
+		}
+		abstract class Demo{
+		   public abstract void update() ;
+		   public void show(){  System.out.println("show()..."); }
+		}
+		interface Inter{
+		    void save() ;
+		    void get() ;
+		}
+
+
+二、Socket编程/网络编程
+	--1、概念
+
+
+
+
+
+	

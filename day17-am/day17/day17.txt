@@ -1,0 +1,175 @@
+一、模拟多线程售票
+	--1、继承Thread
+		package cn.tedu.thread;
+
+		//这个类用来测试 多线程售票
+		//TODO  为什么数据会出错，分析程序？？？
+		//TODO  怎么解决多线程编程中的数据安全隐患？？？
+		//TODO  多操作IDEA
+		public class Test3_Tickts {
+		    public static void main(String[] args) {
+		        //3、创建线程对象
+		        MyTickets t1 = new MyTickets();
+		        MyTickets t2 = new MyTickets();
+		        MyTickets t3 = new MyTickets();
+		        MyTickets t4 = new MyTickets();
+		        t1.start();
+		        t2.start();
+		        t3.start();
+		        t4.start();
+		        //4、问题1：需要是卖100张票，目前卖了400张票。为什么？因为tickets是实例变量
+		        //每次new都会给对象初始化，4个对象，就初始化了4次有了400张票。--怎么解决？
+		        //如果能把tickets变成多个对象间共享的就可以了？--
+		    }
+		}
+		//1、模拟多线程开发
+		class MyTickets extends Thread {
+		    //定义变量，记录100张票
+		//  int tickets = 100; //4.1、实例变量，会new多次就拥有多张票
+		    static  int tickets = 100;//4.2、变量共享资源
+		    //2、开始卖票 ，写进run()
+		    @Override
+		    public void run() {
+		        while (true) {//一直卖票
+		        //tickets = 1，t1 t2 t3 t4开始准备卖票
+		            if (tickets > 0) {
+		                try {
+		                    //5、检查多线程数据有没有安全隐患，最终的大招就是让程序休眠一会10ms
+		                    //问题2多卖：同一张票卖给了多个人
+		                    //问题3超卖：卖出了0号票
+		                    //t1 t2 t3 t4开始睡觉
+		                    Thread.sleep(10);
+		                } catch (InterruptedException e) {
+		                    e.printStackTrace();
+		                }
+		                //超卖：
+		                //假设t1先醒，开始卖票，当前tickets=1，tickets--，输出1，然后自减变成0
+		                //假设t2又醒，开始卖票，当前tickets=0，tickets--，输出0，然后自减变成-1
+		                //假设t3又醒，开始卖票，当前tickets=-1，tickets--，输出-1，然后自减变成-2
+		                //假设t4又醒，开始卖票，当前tickets=-2，tickets--，输出-2，然后自减变成-3
+		                //重卖：
+		                //假设t1先醒，开始卖票，当前tickets=1，tickets--，输出1，还没来得及改呢！！
+		                //假设t2又醒，开始卖票，当前tickets=1，tickets--，输出1，还没来得及改呢！！
+		                //假设t3又醒，开始卖票，当前tickets=1，tickets--，输出1，还没来得及改呢！！
+		                //假设t4又醒，开始卖票，当前tickets=1，tickets--，输出1，还没来得及改呢！！
+		                System.out.println(getName() + "：" + tickets--);
+		            } else {
+		                break;//票数<=0就结束
+		            }
+		        }
+		    }
+		}
+
+
+
+	--2、实现Runnable接口
+		package cn.tedu.tickets;
+
+		//这个类用来模拟多线程售票
+		public class Test1_Tickets2 {
+		    public static void main(String[] args) {
+		        MyTickets target = new MyTickets();
+		        //第一个参数是要绑定的Runnable实现类对象，第二个参数是线程名称
+		        Thread t1 = new Thread(target, "窗口1：");
+		        Thread t2 = new Thread(target, "窗口2：");
+		        Thread t3 = new Thread(target, "窗口3：");
+		        Thread t4 = new Thread(target, "窗口4：");
+		        t1.start();
+		        t2.start();
+		        t3.start();
+		        t4.start();
+		    }
+		}
+		//1、创建类实现接口
+		class MyTickets implements Runnable {
+		    int tickets = 100; //定义变量，记录票数
+		    //2、写业务
+		    @Override
+		    public void run() {
+		        while (true) {//一直卖票
+		            if (tickets > 0) {//有票就卖
+		                try {
+		                    Thread.sleep(10);//让程序休眠10ms
+		                    //问题：发生了重卖和超卖现象
+		                } catch (InterruptedException e) {
+		                    e.printStackTrace();
+		                }
+		                //超卖：
+		                //假设t1先醒，开始卖票，当前tickets=1，tickets--，输出1，然后自减变成0
+		                //假设t2又醒，开始卖票，当前tickets=0，tickets--，输出0，然后自减变成-1
+		                //假设t3又醒，开始卖票，当前tickets=-1，tickets--，输出-1，然后自减变成-2
+		                //假设t4又醒，开始卖票，当前tickets=-2，tickets--，输出-2，然后自减变成-3
+		                //重卖：
+		                //假设t1先醒，开始卖票，当前tickets=1，tickets--，输出1，还没来得及改呢！！
+		                //假设t2又醒，开始卖票，当前tickets=1，tickets--，输出1，还没来得及改呢！！
+		                //假设t3又醒，开始卖票，当前tickets=1，tickets--，输出1，还没来得及改呢！！
+		                //假设t4又醒，开始卖票，当前tickets=1，tickets--，输出1，还没来得及改呢！！
+		                //Thread.currentThread().getName()获取正在执行任务的线程的名称
+		                System.out.println(Thread.currentThread().getName()+" ~ "+tickets--);
+		            } else {
+		                break; //结束死循环
+		            }
+		        }
+		    }
+		}
+二、同步锁
+	--1、原理：是指给你的共享资源加锁。还是可以让多个线程操作共享资源，只不过哪个线程有钥			匙，拿着钥匙进来开锁使用共享资源，没有钥匙的线程等待。--同步的锁，
+	--2、同步和异步的区别：
+		--同步：是需要拿着钥匙开锁，同一时刻只能有一个线程操作共享资源，其他线程排队等待。			   牺牲了效率，提高了安全。
+		--异步：是没有排队的现象，大家同时使用了共享资源。提高了效率，牺牲了数据安全。
+		--举例：可以看做是你使用教室的门这个共享资源的过程
+	--3、语法
+		synchronized(对象){   需要同步的代码；  }
+	--4、使用锁
+		--锁的位置：不能太大，会降低效率。也不能太小，就相当于没锁住没用。所以找个合适的位置。
+		--锁的对象：要求多个线程间使用的是同一把锁。
+		--使用范围：可以用在方法上，也可以用在代码块上
+	--5、改造
+		package cn.tedu.tickets;
+
+		//这个类用来模拟多线程售票
+		public class Test1_Tickets2 {
+		    public static void main(String[] args) {
+		        MyTickets target = new MyTickets();
+		        //第一个参数是要绑定的Runnable实现类对象，第二个参数是线程名称
+		        Thread t1 = new Thread(target, "窗口1：");
+		        Thread t2 = new Thread(target, "窗口2：");
+		        Thread t3 = new Thread(target, "窗口3：");
+		        Thread t4 = new Thread(target, "窗口4：");
+		        t1.start();
+		        t2.start();
+		        t3.start();
+		        t4.start();
+		    }
+		}
+		class MyTickets implements Runnable {
+		    int tickets = 100; //定义变量，记录票数
+		    Object obj = new Object();
+		    @Override
+		// 4、锁方法，把方法整体都锁起来，虽然降低访问效率但是提高了安全性。默认使用的锁对象是this
+		//  synchronized public void run() {
+		    public void run() {
+		        while (true) {//一直卖票
+		            //1、可以把有线程安全隐患的 代码 锁起来--同步的锁代码块
+		            //2、锁的位置：要合理，不能太大也不能太小。建议从共享资源开始位置，一直到使用刚结束都锁起来
+		            //3、锁的对象：锁代码块的锁对象可以是任意对象，只要是同一个对象就可以。
+		//            synchronized (new Object()){//没锁住？？线程间使用的不是同一个锁对象，每个线程进来都new了一个自己的锁
+		//            synchronized (obj){//锁成功，因为多个线程使用的都是同一个Object对象。
+		            synchronized (this){//锁成功，因为多个线程使用的都是同一个本类的对象。
+		                if (tickets > 0) {//有票就卖
+		                    try {
+		                        Thread.sleep(10);//让程序休眠10ms
+		                    } catch (InterruptedException e) {
+		                        e.printStackTrace();
+		                    }
+		                    System.out.println(Thread.currentThread().getName() + " ~ " + tickets--);
+		                } else {
+		                    break; //结束死循环
+		                }
+		            }
+		        }
+		    }
+		}
+
+三、单例设计模式
+		

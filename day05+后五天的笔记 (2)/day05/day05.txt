@@ -1,0 +1,270 @@
+一、方法
+	--1、语法
+		方法的修饰符  方法的返回值  方法名([方法的参数列表]){
+			方法体
+		}
+	--2、方法调用
+		package cn.tedu.method;
+
+		//这个类用来测试  方法的使用
+		public class Test1_Method {
+
+			public static void main(String[] args) {
+				System.out.println(9);
+				print();//2、调用指定的方法
+				System.out.println(8);
+			}
+
+			// 1、创建print()
+			// 修饰符 返回值 方法名(参数列表){ 方法体 }
+			public static void print() {
+				System.out.println(1);
+				System.out.println(2);
+				System.out.println(3);
+			}
+
+		}
+
+	--3、方法传参
+		package cn.tedu.method;
+		//这个类用来测试  方法的传参
+		//修饰符  返回值  方法名(参数类型  参数名){}
+		public class Test2_Method2 {
+			public static void main(String[] args) {
+				//1、调用方法
+				add(15) ;
+				method(10,5) ;//3、方法传参时，多个参数之间逗号隔开
+				function( 10,5,"皮皮霞" ) ;
+			}
+			public static void function( int a , int b , String c ) {
+				//+  在两个数字之间用来做加法运算  
+				//+  和字符串做拼接
+				System.out.println(a+b+c);//15皮皮霞
+			}
+			
+			//4、创建method方法，参数列表中，需要匹配参数类型  和  参数名  。
+			public static void method(int a , int b) {
+				System.out.println(a);
+				System.out.println(b);
+			}
+			//2、创建add方法  ：  参数5 想要成功被接收到，参数的类型 必须和 5的 数据类型保持一致
+			public static void add(int a) {
+				System.out.println(a);
+			}
+		}
+
+	
+	--4、方法返回值
+		package cn.tedu.method;
+
+		import java.util.Random;
+
+		//这个类用来测试  方法的返回值
+		public class Test3_Method3 {
+			public static void main(String[] args) {
+				
+				//1、sum记录着add()的返回值
+				int sum = add(10,5) ;
+				System.out.println(sum);//50
+				
+				//TODO 5、练习：
+				String str = concat("jack",10,5);
+				System.out.println(str);// jack15  ?  jack105
+			}
+			//6、创建concat()
+			public static String concat(String m , int n , int o){
+				//7、通过return关键字把结果返回给调用位置。+起的作用就是拼接字符串
+				return m+n+o ;
+			}
+			
+			//2、创建add(10,5)
+			//3、返回值的类型  和  sum的类型一致
+			public static int add(int a , int b) {
+				//4、通过return 关键字 把结果返回调用位置
+				return a*b ; 
+			}
+			
+			
+			
+			
+		}
+
+
+二、方法的重载overload
+	--1、概念：在同一个类中，存在多个 同名方法，但是参数列表不同(个数不同或者类型不同)。
+	--2、意义：为了体现程序的灵活性，方便调用。
+	--3、练习1：数字求和
+		package cn.tedu.overload;
+		//这个类用来测试  方法重载：同名方法，参数列表不同
+		public class Test4_Overload {
+			public static void main(String[] args) {
+				add(10,5);//自动匹配需要两个int参数的add()
+				add(10,5,"jack");//自动匹配需要两个int参数和一个String参数的add()
+				add("rose",5,10);//自动匹配需要一个String参数和两个int参数的add()
+			}
+			
+			//方法重载override：是指在一个类中的现象。方法名相同但是参数列表不同的现象。是为了提高程序的灵活性
+			public static void add(String m,int n,int x) {
+				System.out.println(m+n+x);//rose510
+			}
+			public static void add(int a,int b,String c) {
+				System.out.println(a+b+c);//15jack
+			}
+			public static void add(int m,int n) {
+				System.out.println(m+n);//15
+			}
+			
+		}
+
+
+	
+	--4、练习2：数据的打印
+		package cn.tedu.overload;
+		//这个类用来测试  方法重载：同名方法，参数列表不同
+		public class Test5_Overload {
+			public static void main(String[] args) {
+				print('中');
+				print(9.9);
+				print(10);
+			}
+			//数据打印 int double String char boolean
+			public static void print(int num) {
+				System.out.println(num);
+			}
+			public static void print(double num) {
+				System.out.println(num);
+			}
+			public static void print(String num) {
+				System.out.println(num);
+			}
+			public static void print(char num) {
+				System.out.println(num);
+			}
+			public static void print(boolean num) {
+				System.out.println(num);
+			}
+		}
+
+		
+三、数组
+	--1、可以存放多个数据。
+	--2、只不过要求数据都是相同的类型。
+	--3、数组里的每个数据都有  唯一的标志。叫下标(脚标)，从0开始。
+	--4、数组的标志是[]，英文是Array。
+四、数组的创建：数组类型[] 数组名 = 初始化
+	--1、静态初始化
+		int[] a = new int[]{1,2,3,4,5};
+		int[] b = {1,2,3,4,5};
+	--2、动态初始化
+		int[] c = new int[5] ;
+	--3、练习1：数组中存入hello
+		package cn.tedu.array;
+
+		//这个类用来测试 数组的创建
+		public class Test6_Array {
+			public static void main(String[] args) {
+				//1、创建数组 ，存入hello
+				//--静态初始化 ：一开始刚创建好时，存的都是默认值，char类型默认值是\u0000。
+				char[] a = new char[] { 'h' , 'e' , 'l' ,'l' ,'o'  } ;
+				char[] b = {  'h' , 'e' , 'l' ,'l' ,'o'  } ; 
+				
+				//--动态初始化，需要在创建数组的同时，指定长度！！
+				char[] c = new char[5];
+				c[0] = 'h' ; //把下标为0的数据，从默认值\u0000改为'h'
+				c[1] = 'e' ;//把下标为1的数据，从默认值\u0000改为'e'
+				c[2] = 'l' ;//把下标为2的数据，从默认值\u0000改为'l'
+				c[3] = 'l' ;//把下标为3的数据，从默认值\u0000改为'l'
+				c[4] = 'o' ;//把下标为4的数据，从默认值\u0000改为'o'
+				
+				//数组的长度如果是5，下标最大值是4的话，有没有下标为5的元素---没有！！！
+				//java.lang.ArrayIndexOutOfBoundsException：原因就是访问了不存在的下标5
+				//c[5] = 'x';
+				
+				System.out.println(a);
+				System.out.println(b);
+				System.out.println(c);
+			}
+		}
+
+五、遍历数组
+	--1、语法
+		for(开始位置;循环条件;更改条件){ 循环体}
+		for(从下标为0的位置开始;下标的最大值是数组的长度-1;下标自增){ 循环体}
+	--2、获取数组长度
+		length属性，可以获取数组的长度
+
+	--3、练习1：输出每个月的天数
+		package cn.tedu.array;
+
+		//这个类用来测试 数组的练习
+		public class Test7_Array2 {
+			public static void main(String[] args) {
+				method() ;//		输出每个月的天数
+			}
+			public static void method() {
+				//1、创建数组，存放12个数字
+				int[] a = { 31,28,31,30,31,30,31,31,30,31,30,31  };
+		//		System.out.println(a[0]);
+		//		System.out.println(a[1]);
+		//		System.out.println(a[2]);
+		//		System.out.println(a[3]);
+				
+				//2、遍历数组
+				//int i = 0  是指从下标0开始  ，i表示下标
+				// i <= a.length-1 是指下标最大值是数组的长度-1
+				//i++   是指下标依次递增，向后遍历数据
+				for( int i = 0 ; i <= a.length-1 ; i++ ){  
+					//3、a[i]是指根据下标i获取a数组中的元素  
+		//			System.out.println( a[i] );
+					//数组一共12个数字，i的变化就是0-11，那么i+1就能获取1-12月了
+					System.out.println(  i+1  +"月有"+a[i]+"天" );
+				}
+				
+			}
+		}
+
+	--4、练习2：遍历数组，存入1到10
+	--5、练习3：创建随机数组
+		package cn.tedu.array;
+
+		//这个类用来测试 数组的练习
+		public class Test7_Array2 {
+			public static void main(String[] args) {
+				method() ;  //输出每个月的天数
+				method2();  //TODO  遍历数组，存入1到10
+				//method3();  //TODO  创建数组，并且存入随机数，开发步骤同method2()
+			}
+			public static void method2() {
+				//1、创建数组，动态初始化
+				
+				//2、遍历数组
+				
+				//3、根据下标获取每个数据，修改成1-10
+				
+				//4、打印数组的数据(还是需要遍历，输出每个数据)
+				
+				
+			}
+			public static void method() {
+				//1、创建数组，存放12个数字
+				int[] a = { 31,28,31,30,31,30,31,31,30,31,30,31  };
+		//		System.out.println(a[0]);
+		//		System.out.println(a[1]);
+		//		System.out.println(a[2]);
+		//		System.out.println(a[3]);
+				
+				//2、遍历数组
+				//int i = 0  是指从下标0开始  ，i表示下标
+				// i <= a.length-1 是指下标最大值是数组的长度-1
+				//i++   是指下标依次递增，向后遍历数据
+				for( int i = 0 ; i <= a.length-1 ; i++ ){  
+					//3、a[i]是指根据下标i获取a数组中的元素  
+		//			System.out.println( a[i] );
+					//数组一共12个数字，i的变化就是0-11，那么i+1就能获取1-12月了
+					System.out.println(  i+1  +"月有"+a[i]+"天" );
+				}
+				
+			}
+		}
+
+	

@@ -1,0 +1,57 @@
+如果是0基础，建议买书：java从入门到精通 或者 java核心技术卷I
+一、数据类型
+	--1、在java的世界里，会把我们常见的数据，分为好多类型。
+	--2、基本类型(八种)
+	--3、引用类型(略，后面讲)
+二、基本类型(八种)
+	--1、整型：byte short int long 
+	--2、浮点型：float double 
+	--3、布尔型：boolean
+	--4、字符型：char
+	--5、练习1：最大值最小值
+		package cn.tedu.basic;
+		//这个类 用来 测试  基本类型的取值范围
+		public class Test1_Scope {
+			public static void main(String[] args) {
+				//三要素：变量类型   变量名 = 变量值
+				     
+				//整型：byte 	short	 int 	long
+				byte max = Byte.MAX_VALUE ;  // 定义变量，记录byte类型的最大值
+				byte min = Byte.MIN_VALUE ; //定义变量，记录byte类型的最小值
+		//		System.out.println( "max" );//这样打印不了变量的值，这样打印的是固定的数据max
+				System.out.println( max );//127，打印变量的值
+				System.out.println(min) ; //-128，打印变量的值
+				
+				short max2 = Short.MAX_VALUE ; 
+				short min2 = Short.MIN_VALUE ; 
+				System.out.println( max2 );//32767
+				System.out.println(min2);//-32768
+				
+				// int - Integer       
+		 		int max3 = Integer.MAX_VALUE;
+		 		int min3 = Integer.MIN_VALUE;
+				System.out.println(max3);//2147483647
+				System.out.println(min3);//-2147483648
+				
+				// long - Long
+				long max4 = Long.MAX_VALUE ;
+				long min4 = Long.MIN_VALUE ;
+				System.out.println(max4);//9223372036854775807
+				System.out.println(min4);//-9223372036854775808
+				
+				//TODO 浮点型： float - Float    double - Double   char - Character
+				
+				
+			}
+		}
+
+	--6、练习2：输入个人信息
+	
+	--7、练习3：圆形面积
+	
+	--8、练习4：变量交换
+
+	
+
+
+	

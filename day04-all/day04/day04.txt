@@ -1,0 +1,274 @@
+一、for练习：
+	--1、练习2：打印10到0
+		package cn.tedu.fordemo;
+
+		//这个类用来测试  for
+		//for( 开始位置 ; 循环条件 ; 更改条件   ){   循环体  }
+		public class Test1_For {
+			public static void main(String[] args) {
+		//		打印10到0
+				for( int i = 10  ;  i >= 0  ;  i--  ){   
+		//			System.out.println(i);//打印后换行展示
+					System.out.print(i);//在同行展示
+				}
+			}
+		}
+
+	--2、练习3：打印8,88,888,8888,
+		package cn.tedu.fordemo;
+
+		//这个类用来测试  for
+		//for( 开始位置 ; 循环条件 ; 更改条件   ){   循环体  }
+		public class Test1_For {
+			public static void main(String[] args) {
+		//		打印8,88,888,8888,
+				for( int i = 8 ; i <= 8888 ; i=i*10+8   ){  
+					System.out.print( i+"," ); 
+				}
+				
+			}
+		}
+	
+		
+二、嵌套for循环：
+	--1、语法
+		for( 开始位置 ; 循环条件 ; 更改条件   ){  //外循环
+		 	for( 开始位置 ; 循环条件 ; 更改条件   ){ //内循环 
+		 		循环体  
+			}  
+		}
+	--2、入门案例
+		package cn.tedu.fordemo;
+
+		//这个类用来测试 嵌套for
+		public class Test2_For2 {
+			public static void main(String[] args) {
+				//总结1、外循环执行1次，内循环执行多次
+				//第一次循环，也就是当i=1时，输出了i的值1，并且输出j的所有值1 2 3 4 5 ，把i自增变成2
+				//第二次循环，也就是当i=2时，输出了i的值2，并且输出j的所有值1 2 3 4 5 ，把i自增变成3
+				//第三次循环，也就是当i=3时，输出了i的值3，并且输出j的所有值1 2 3 4 5 ，把i自增变成4
+				for( int i = 1 ; i <= 3 ; i++ ) { //外循环,i= 1 2 3 
+					System.out.println(i);
+					
+					for( int  j = 1 ; j <= 5; j++) {//内循环 ，j = 1 2 3 4 5
+						System.out.println(j);
+					}
+				}
+				//总结2、外循环控制行，内循环控制列
+				for( int i = 1 ;  i <= 2  ; i++ ) {//外循环，执行2次 i = 1 2
+					for( int j = 1 ;  j <= 3  ; j++ ) {//内循环，执行3次 j = 1 2 3
+						System.out.print("*");//同行展示
+					}
+					
+					System.out.println();//换行
+				}
+				
+		
+				
+			}
+		}
+
+
+	--3、 练习1：打印正方形
+		//	TODO 	打印正方形  五行五列的*
+		for(int i = 0 ; i < 5 ; i++) {//外循环控制行，执行5次，打印5行
+			for(int j = 0 ; j < 5 ; j++) {	//内循环控制列，执行5次，打印5列
+				System.out.print("*");//同行展示
+			}
+			
+			System.out.println();//换行
+		}
+	--4、 练习2：打印左直角三角形
+		package cn.tedu.fordemo;
+		//这个类用来测试 嵌套for的练习
+		public class Test3_For2 {
+			public static void main(String[] args) {
+		//打印左直角三角形
+				//第一次循环时，i=1时，内循环： j = 1; j <= 1;此时j的取值范围就是=1，          打印*，换行。i自增变成2
+				//第二次循环时，i=2时，内循环： j = 1; j <= 2;此时j的取值范围就是=1 2，       打印**，换行。i自增变成3
+				//第三次循环时，i=3时，内循环： j = 1; j <= 3;此时j的取值范围就是=1 2 3，    打印***，换行。i自增变成4
+				//第四次循环时，i=4时，内循环： j = 1; j <= 4;此时j的取值范围就是=1 2 3 4， 打印****，换行。i自增变成5
+				//第五次循环时，i=5时，内循环： j = 1; j <= 5;此时j的取值范围就是=1 2 3 4 5，打印*****，换行。i自增变成6 
+				for(int i = 1 ; i <=5 ; i++) {//外循环控制行，执行5次，打印5行
+					for(int j = 1; j <= i ; j++) {//外循环控制列。问题是：列数不固定，需要跟随行i改变
+						System.out.print("*");//同行展示
+					}
+					System.out.println();//换行
+				}
+				
+		
+			}
+		}
+
+	--5、 练习3：打印99乘法表
+		//	打印99乘法表
+		for(int i = 1 ; i <=9 ; i++) {//外循环控制行，执行9次，打印9行
+			for(int j = 1; j <= i ; j++) {//外循环控制列。问题是：列数不固定，需要跟随行i改变
+	//				System.out.print("3*2=6");//同行展示
+	//				System.out.print("行*列=积");//同行展示
+	//				System.out.print("i*j=i*j");//同行展示
+					System.out.print(i+"*"+j+"="+i*j+"	");//同行展示
+				}
+				System.out.println();//换行
+			}
+				
+三、break和continue	
+	--1、作用：用来结束循环
+	--2、区别：break简单粗暴立刻结束。continue结束这次继续下次。
+	--3、找数字88
+		package cn.tedu.breakdemo;
+
+		import java.util.Scanner;
+
+		//这个类用来测试   结束循环
+		//找数字88
+		public class Test4_Break {
+			public static void main(String[] args) {
+				//循环结构，循环100次
+				for(int i = 0 ; i < 100 ; i++) {
+					//1，接收100次，用户输入的整数
+					int input = new Scanner(System.in).nextInt();
+					
+					//2，判断是不是88
+					if( input == 88 ) {//是88
+						System.out.println("中了");
+						//a，break和continue都只能用于循环结构中，结束循环
+						//b，break和continue之后不要再出现代码了，是不可到达的代码
+						break ; //循环结束，循环只要看到break就会立刻结束
+					}else {//不是88
+						continue ; //继续输入
+					}
+					
+				}
+				
+			}
+		}
+
+四、while循环：先判断再执行
+	--1、语法
+		while(循环条件){
+			循环体
+		}
+	--2、练习1：猜数字	
+		package cn.tedu.whiledemo;
+
+		import java.util.Random;
+		import java.util.Scanner;
+
+		//这个类用来测试  循环结构
+		public class Test5_While {
+			public static void main(String[] args) {
+				// 猜数字
+				// 1、让程序产生随机数
+				// nextInt(m)--是指产生m以内的随机数，从0开始
+				int random = new Random().nextInt(100);
+				System.out.println(random);
+
+				//死循环只能用while吗？-- for行吗？--可以，只需要让循环条件永远成立！
+		//		for( int i = 1 ; i >= 1 ; i++  ) {
+				while (true) { // 循环条件一直满足--true，经典的死循环。必须设置合理的出口！！！。
+			// while( random>50 ) {//循环条件可以自己决定
+					// 2、一直接收用户输入的整数
+					int input = new Scanner(System.in).nextInt();
+					// 3、开始比较
+					if (input > random) {
+						System.out.println("大了");
+					} else if (input < random) {
+						System.out.println("小了");
+					} else if (input == random) {
+						System.out.println("中了");
+						break; // 给死循环设置出口！！！
+					}
+				}
+
+			}
+		}
+
+
+	
+五、do...while循环：先执行再判断
+	--1、语法
+		do{
+			循环体
+		}while(循环条件);	
+	--2、改造猜数字	
+		package cn.tedu.whiledemo;
+
+		import java.util.Random;
+		import java.util.Scanner;
+
+		//这个类用来测试  循环结构
+		public class Test5_While {
+			public static void main(String[] args) {
+				// 猜数字
+				// 1、让程序产生随机数
+				// nextInt(m)--是指产生m以内的随机数，从0开始
+				int random = new Random().nextInt(100);
+				System.out.println(random);
+
+				//死循环只能用while吗？-- for行吗？--可以，只需要让循环条件永远成立！
+		//		for( int i = 1 ; i >= 1 ; i++  ) {
+				do { // 循环条件一直满足--true，经典的死循环。必须设置合理的出口！！！。
+			// while( random>50 ) {//循环条件可以自己决定
+					// 2、一直接收用户输入的整数
+					int input = new Scanner(System.in).nextInt();
+					// 3、开始比较
+					if (input > random) {
+						System.out.println("大了");
+					} else if (input < random) {
+						System.out.println("小了");
+					} else if (input == random) {
+						System.out.println("中了");
+						break; // 给死循环设置出口！！！
+					}
+				}while (true);
+
+			}
+		}
+	
+六、三种循环的区别
+	相同点：都可以解决 重复执行相同任务  的需求。所以三种循环之间可以互相替换。
+	不同点：
+		--for(开始位置；循环条件；更改条件)：要求知道从哪儿开始，还有循环的次数。
+		--while(循环条件){循环体} ： 只需要知道条件。
+		--do{循环体}while(循环条件) ： 只需要知道条件，而且循环体最少执行1次。
+		--while 是先判断再执行
+		--do...while 是先执行再判断
+七、变量
+	--1、根据位置不同，名字和作用完全不同。
+	--2、变量在使用时有 就近 原则。
+	--3、成员变量：
+		--位置是在成员位置(类里方法外)
+		--作用域是整个类中
+		--不用初始化，也会自动被初始化成默认值 
+	--4、局部变量：
+		--位置是在局部位置(方法里) 
+		--作用域也就是方法里
+		--必须手动初始化
+	--5、测试：
+		package cn.tedu.variable;
+
+		//这个类用来测试 变量的使用
+		public class Test6_Variable {
+			//2、成员变量：位置在类里方法外  + 作用范围是整个类中  + 可以不用手动初始化(因为有默认值)
+			//3、关于成员变量的默认值：基本类型都有各自的默认值+引用类型默认值都是null
+			//TODO  4、自己测试基本类型的默认值
+			static String name ;
+			static int age ; 
+			
+			public static void main(String[] args) {
+				//1、局部变量：位置是在方法里 + 必须手动初始化 + 作用范围是方法里
+				int count  = 9 ;
+				System.out.println(count);
+				
+				System.out.println(name);//null
+				System.out.println(age);//0
+				
+			}
+			
+		}
+
+
+
+		
+		

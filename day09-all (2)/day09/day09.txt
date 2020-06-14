@@ -1,0 +1,223 @@
+一、final关键字
+	--1、测试
+		package cn.tedu.finaldemo;
+		//这个类用来测试   final关键字
+		public class Test1_Final {
+			public static void main(String[] args) {
+				Erzi erzi = new Erzi();
+		//		erzi.name = "赵" ;    //3.1、报错，已经被final了，值不能改，只能用用！！！
+				System.out.println(erzi.NAME);
+				System.out.println( BaBa.NAME );
+			}
+		}
+		//创建父类
+		//final class BaBa{//1、父类被final修饰后，变成了最终的类，不能被继承。The type Erzi cannot subclass the final class BaBa
+		class BaBa{
+			//2、当变量被final修饰后，就成了常量。值不能被修改。The final field BaBa.name cannot be assigned
+			//4、常量名一般都是大写的。为了外界方便调用，通常也会被static修饰。
+			static final String NAME = "刘" ;
+			//3、当方法被final修饰后，就成了最终方法，不能被重写。Cannot override the final method from BaBa
+			final public void study() {
+				System.out.println("赚钱养家");
+			}
+		}
+		//创建子类
+		class Erzi extends BaBa{
+			//方法重写：方法声明和父类一模一样
+		//	public void study() {
+		//		System.out.println("热爱java");
+		//	}
+		}
+
+
+
+
+
+
+
+
+二、多态
+	--1、概念
+		同一对象，在不同时刻具有不同的形态。
+	--2、特点
+		--前提： 发生继承关系  +  方法重写
+		--口诀1：父类引用指向子类对象
+			--Animal a = new Dog();
+		--口诀2：多态中，编译看左边，运行看右边
+			--编译看左边：想要保存成功，使用父类提供的功能
+			--运行看右边：想要结果，找子类
+	--3、入门案例
+		package cn.tedu.multi;
+
+		//这类用来 测试  多态 
+		public class Test2_Multi {
+			public static void main(String[] args) {
+				//创建子类对象测试
+				Dog d = new Dog();  
+				d.eat();   //狗吃肉
+				
+				//创建多态对象测试
+				Animal a = new  Dog() ;  //口诀1：父类引用  指向 子类对象，多态  / 向上转型 
+				a.eat()  ; // 口诀2：编译看左边，运行看右边
+				//2、编译看左边：意思是 想要保存成功 必须  使用 左边也就是父类 提供的功能！！！
+				//3、运行看右边： 意思是   最终的执行结果 以子类的 实现为准！！
+				//4、多态的好处：是用来统一调用的标准！！！标准就是父类！！！！如果父类没提供就不能用！！
+			}
+		}
+		//1、多态前提：继承 + 重写
+		class Animal{
+			public void eat() {
+				System.out.println("吃啥都行") ;
+			}
+		}
+		class Dog extends Animal{
+			//方法重写
+			public void eat() {
+				System.out.println("狗吃肉");
+			}
+		}
+
+三、多态的好处
+	--1、可以把不同的子类对象都当作父类来看，可以屏蔽不同子类对象之间的差异，写出通用的代码，做出通用的编程。
+	--2、统一调用标准，一切向父类看齐。
+	--3、提高了程序的扩展性和可维护性。
+四、多态的使用	
+	--1、测试
+		package cn.tedu.multi;
+		//这类用来测试 多态的使用
+		//1、成员变量：由于不存在重写，所以直接使用父类的
+		//2、成员方法：由于存在重写，所以调用了父类的  方法声明  ，使用了  子类的 方法体
+		//3、静态资源：由于不存在重写，所以直接使用父类的  方法声明 和方法体
+		public class Test3_Multi {
+			public static void main(String[] args) {
+				// 创建多态对象测试
+				Fu f= new Zi() ; //父类引用  指向 子类对象
+				//3、编译看左边，只要想用的功能，必须是父类提供的。
+				    //运行看右边，多指发生了方法重写后，使用右边的也就是子类的方法体。
+				//1、成语方法的使用，一定是使用父类的(方法声明)，但是，方法体，由于可以重写，所以用子类的方法体。
+				f.study();  //我爱java，
+				//2、成员变量的使用，一定是使用父类的，由于不存在重写，所以执行的也是父类的。
+				System.out.println( f.name  );  // jack，
+				//3、静态方法，可以存在重写吗？  --  不可以！！！
+				f.play();  //由于静态资源根本不存在重写，所以直接执行父类的方法声明和方法体。即使子类有一个和父类一模一样的方法也不是重写！！！
+			}
+		}
+		class Fu{
+			String name = "jack" ;
+			public void study() {
+				System.out.println("爸爸正在学习");
+			}
+			static public void play() {
+				System.out.println("爸爸正在玩儿");
+			}
+		}
+		class Zi extends Fu{
+			String name = "xiongda" ;
+			//方法重写
+			public void study() {
+				System.out.println("我爱java");
+			}
+			static public void play() {//这个是子类特有的，不是重写！
+				System.out.println("儿子正在玩儿");
+			}
+		}
+
+五、异常
+	--1、异常的继承结构
+		Throwable - 顶级父类
+		-- Error：系统错误，无法修复
+		-- Exception：可修复的错误
+			--RunTimeException
+				--ClassCastException
+				--ClassNotFoundException
+	--2、测试
+		package cn.tedu.exception;
+
+		import java.util.InputMismatchException;
+		import java.util.Scanner;
+
+		//这个类用来测试  异常
+		public class Test4_Exception {
+			public static void main(String[] args) {
+				// method() ; //暴露异常：这个过程，咱们自己测试就可以了，千万不要让用户看见！！
+		//		method2() ; // 异常处理：捕获 
+				try {
+					method3() ; // 异常处理：抛出
+				} catch (Exception e) {//多态，把子类当父类来看，写出通用代码
+		//			e.printStackTrace();
+					System.out.println("输入有误！！");
+				}
+			}
+			//2、抛出：在方法声明上添加，  throws  异常类型1,异常类型2,异常类型3
+		//	public static void method3() throws ArithmeticException,InputMismatchException{
+			public static void method3() throws Exception{//多态，把子类当父类来看，写出通用代码
+				int a = new Scanner(System.in).nextInt();
+				int b = new Scanner(System.in).nextInt();
+				System.out.println(a / b);
+			}
+			
+			//1、捕获异常：	try{  ......    }catch(异常类型 变量名){   	合理的解决方案    }
+			public static void method2() {
+				try {
+					int a = new Scanner(System.in).nextInt();
+					int b = new Scanner(System.in).nextInt();
+					System.out.println(a / b);
+				}catch(ArithmeticException a) {//异常类型1
+					System.out.println("第二次输入不能为0！");//合理的解决方案1
+				}catch(InputMismatchException b){//异常类型2	
+					System.out.println("请输入两次整数！");//合理的解决方案2   
+				}catch(Exception a) {
+					//2、参数Exception就是多态，不关心具体的子类类型是谁，会把所有子类当父类来看，写出通用代码
+					System.out.println("请输入正确数据！");   
+				}
+			}
+			//0、暴露异常
+			public static void method() {
+				// 1、接收用户输入的两个整数
+				int a = new Scanner(System.in).nextInt();
+				int b = new Scanner(System.in).nextInt();
+
+				// 2、做除法运算
+				System.out.println(a / b);
+			}
+		}
+
+
+六、抽象类
+	--1、概念
+		Java中可以定义没有方法体的方法，该方法由其子类来具体的实现。该没有方法体的方法我们称之		为抽象方法，含有抽象方法的类我们称之为抽象类。
+		抽象类可以理解为是一个只有方法声明没有方法体的特殊类。
+	--2、入门案例
+		package cn.tedu.abstractdemo;
+
+		//这个类用来测试 抽象类
+		public class Test5_Abstract {
+			public static void main(String[] args) {
+				// 创建多态对象测试
+				Animal an = new Dog();
+				an.eat();
+				an.play();
+			}
+		}
+		// 2、如果一个类中，包含了抽象方法 ，这个类必须是抽象类
+		// 3、抽象类是一个特殊的 类 ，特殊在 抽象类里 可以包含 抽象方法
+		abstract class Animal {
+			// 1、如果方法没有方法体，就是抽象方法，使用abstract关键字
+			abstract public void eat();
+
+			public void play() {
+				System.out.println("Animal...play()");
+			}
+		}
+		// 4、子类 如果 继承了 抽象的父类 ，子类两条路：把所有抽象方法都重写 或者 是一个抽象的子类。
+		// abstract class Dog extends Animal{
+		class Dog extends Animal {
+			//5、重写抽象方法
+			public void eat() {
+				System.out.println("狗吃肉");
+			}
+		}
+
+
+
+			

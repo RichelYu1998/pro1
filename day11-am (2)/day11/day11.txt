@@ -1,0 +1,71 @@
+一、Object
+	--1、概念：
+		类 Object 是类层次结构的根类。每个类都使用 	Object 作为超类。所有对象（包括数组）都实现这个类的	方法。 
+	--2、创建对象：
+		--Object() 
+	--3、常用方法：
+		--String toString() 
+          返回该对象的字符串表示。 
+		--int hashCode() 
+          返回该对象的哈希码值。 
+		--boolean equals(Object obj) 
+          指示其他某个对象是否与此对象“相等”。 
+        --Class<?> getClass() 
+          返回此 Object 的运行时类。 
+    --4、测试
+		package cn.tedu.api;
+
+		//这个类用来测试  Object的使用
+		//总结：1、在打印对象的时候，默认打印的就是地址值(原因是自动调用Object里的toString()..)，但是如果想打印属性值，就需要重写toString()...
+		public class Test1_Object {
+			public static void main(String[] args) {
+				//创建对象测试
+				Student s = new Student("皮皮霞",20) ;
+				//2、需求：想查看对象的属性值，但是不想一个一个去get()
+		//		System.out.println(   s.getName()   +  s.getAge()  );
+				//底层默认调用了Object的toString()，默认打印了对象的地址值cn.tedu.api.Student@15db9742
+				//怎么做，才能  不看地址值  而  看属性值？--重写父类原有的toString()
+				System.out.println(   s  ) ;
+			}
+		}
+		//创建Student类
+		//class Student extends Object{//1、每个类都继承了Object
+		class Student {
+			//构造方法
+			public Student() {}
+			public Student(String name, int age) {
+				this.name = name;
+				this.age = age;
+			}
+			
+			private String name ; 
+			private int age ; 
+			
+			//get() set()
+			public String getName() {
+				return name;
+			}
+			public void setName(String name) {
+				this.name = name;
+			}
+			public int getAge() {
+				return age;
+			}
+			public void setAge(int age) {
+				this.age = age;
+			}
+			//2、想要打印属性值而不是默认的地址值，需要重写Object的toString()
+			//右键-source-toString()...-ok
+			@Override
+			public String toString() {
+				return "Student [name=" + name + ", age=" + age + "]";
+			}
+			
+		}
+
+
+
+    --5、测试
+
+
+            

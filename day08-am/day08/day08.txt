@@ -1,0 +1,67 @@
+一、继承
+	--1、初衷：本质上就想要提高代码的复用性，减少代码的编写。
+	--2、解决方案：把所有的共性代码，向上抽取，形成父类。
+	--3、特点：
+		--使用extends关键字
+		--相当于子类把父类的功能复制了一份
+		--java只支持单继承
+		--继承可以传递（爷爷，儿子，孙子的关系）
+		--不能继承父类的私有成员
+		--继承多用于功能的修改，子类可以拥有父类的功能的同时，进行功能拓展
+		--像是is a 的关系
+	--4、入门案例：
+		package cn.tedu.oop;
+
+		//这个类用来测试 继承的 入门案例
+		public class Test1_Extends {
+			public static void main(String[] args) {
+				//创建父类对象测试
+				Father f = new Father(); f.sleep();
+				f.eat();
+				System.out.println( f.skin );
+				System.out.println( f.country );
+				//3、 创建子类对象测试
+				Son s = new Son();
+				//直接使用了爸爸类的功能！！
+				s.eat();
+				System.out.println( s.skin );
+				System.out.println( s.country );
+		//		System.out.println(s.sifangmoney);//5.1、是父类的私有成员，子类看不见更用不了
+				//直接使用了爷爷类的功能！！
+				s.sleep();
+			}
+		}
+		//7、继承可以传递
+		class Yeye{
+			public void sleep() {
+				System.out.println("Yeye...sleep()");
+			}
+		}
+		//创建父类
+		class Father extends Yeye {
+			//5、父类的私有成员  子类 无法 继承
+			private  double sifangmoney = 100 ;
+			String skin ="黄种人" ; 
+			String country = "中国"; 
+			
+			public void eat() {
+				System.out.println("Father...eat()");
+			}
+		}
+		//1、创建子类，通过extends关键字表示继承
+		//4、java只支持单继承
+		class Son extends Father{//6、继承的关系是is a的关系，强制要求子类必须 继承父类，否则一无所有 -- 强耦合性！！
+			//2、相当于子类把父类的功能  通通复制过来了
+		}
+
+	
+二、super关键字
+	--1、可以在子类中，使用父类的功能。通过关键字super调用。
+	--2、super关键字相当于是一个父类对象的引用。
+	--3、如果出现在构造方法中，必须是第一条语句。
+三、方法的重写override
+	--1、是发生在继承结构中。
+	--2、在需要修改父类 原有功能时，，才在子类中 发生方法重写。
+	--3、要求：子类的方法声明/签名  和 父类 一模一样
+	
+[复习] 构造方法  this  super  方法重写 	

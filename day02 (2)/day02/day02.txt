@@ -1,0 +1,184 @@
+如果是0基础，建议买书：java从入门到精通 或者 java核心技术卷I
+一、数据类型
+	--1、在java的世界里，会把我们常见的数据，分为好多类型。
+	--2、基本类型(八种)
+	--3、引用类型(略，后面讲)
+二、基本类型(八种)
+	--1、整型：byte short int long 
+	--2、浮点型：float double 
+	--3、布尔型：boolean
+	--4、字符型：char
+	--5、练习1：最大值最小值
+		package cn.tedu.basic;
+		//这个类 用来 测试  基本类型的取值范围
+		//总结：
+		//1、定义变量：变量类型 变量名 = 变量值
+		//2、每个基本类型 都有 对应的 工具类(包装类)，工具类用来给基本类型提供丰富的功能
+		//3、char类型比较灵活，既可以存单个的字符，也可以存数字(使用时会查ascii码表)。
+		public class Test1_Scope {
+			public static void main(String[] args) {
+				// 三要素：变量类型 变量名 = 变量值
+				// 整型：byte short int long
+				byte max = Byte.MAX_VALUE; // 定义变量，记录byte类型的最大值
+				byte min = Byte.MIN_VALUE; // 定义变量，记录byte类型的最小值
+				// System.out.println( "max" );//这样打印不了变量的值，这样打印的是固定的数据max
+				System.out.println(max);// 127，打印变量的值
+				System.out.println(min); // -128，打印变量的值
+				short max2 = Short.MAX_VALUE;
+				short min2 = Short.MIN_VALUE;
+				System.out.println(max2);// 32767
+				System.out.println(min2);// -32768
+				// int - Integer
+				int max3 = Integer.MAX_VALUE;
+				int min3 = Integer.MIN_VALUE;
+				System.out.println(max3);// 2147483647
+				System.out.println(min3);// -2147483648
+				// long - Long
+				long max4 = Long.MAX_VALUE;
+				long min4 = Long.MIN_VALUE;
+				System.out.println(max4);// 9223372036854775807
+				System.out.println(min4);// -9223372036854775808
+				// 浮点型： float - Float 单精度，小数位要求不精确可以用
+				float max5 = Float.MAX_VALUE;
+				float min5 = Float.MIN_VALUE;
+				System.out.println(max5);// 3.4028235E38
+				System.out.println(min5);// 1.4E-45
+				// double - Double 双精度，小数位要求很精确
+				double max6 = Double.MAX_VALUE;
+				double min6 = Double.MIN_VALUE;
+				System.out.println(max6);// 1.7976931348623157E308
+				System.out.println(min6);// 4.9E-324
+				// 布尔类型：true false
+				boolean b = true;
+				boolean b2 = false;
+				// char - Character
+				char c = Character.MAX_VALUE;//65535
+				char c2 = Character.MIN_VALUE;//0
+				System.out.println(c);
+				System.out.println(c2);
+				char c3 = 'a' ;
+				char c4 = '1' ;
+				char c5 = '中' ;//char可以存一个中文汉字
+				char c6 = 97  ;//char可以存一个数字
+				System.out.println(c3);
+				System.out.println(c4);
+				System.out.println(c5);
+				//char类型可以存放一个数字。但是，在使用时，会查询ascii码表，该数字对应的字符是啥，然后使用字符本身。
+				//ascii码表里规定了数字对应的字符是啥。只规定了0-127对应的字符。128-65535默认都对应？字符。
+				System.out.println(c6);//a
+				
+			}
+		}
+
+
+	--6、练习2：输入个人信息
+		package cn.tedu.basic;
+		//这个类用来 测试  输入个人信息
+		//总结：
+		//1、通过+拼接字符串
+		//2、如果要在中间动态拼接字符串，固定写法   "+?????+"  
+		public class Test2_Info {
+			public static void main(String[] args) {
+				String name = "皮皮霞2" ; //定义变量，记录名字
+				System.out.println(  name+"大家好，我叫"+name);
+				
+				//需求：把下面这句话的  静态数据  和  动态数据  分离，然后把动态数据动态拼接
+				//如果要在中间拼接字符串，固定写法   "+?????+"
+				System.out.println("大家好，我叫"+name+"，今年18岁。");
+				
+				String a = "php" ;
+				System.out.println("我爱学"+a);  
+				System.out.println("我爱学"+a+"。");  
+			}
+		}
+
+	--7、练习3：圆形面积
+		package cn.tedu.basic;
+		import java.util.Scanner;
+		//这个类用来测试  圆形面积
+		//总结
+		//1、用+拼接字符串
+		//2、打印时也可以直接打印一个公式
+		//3、动态接收键盘输入的值
+		public class Test3_Area {
+			public static void main(String[] args) {
+				
+		//		double r = 5.5 ; //定义变量，记录半径
+				double r = new Scanner(System.in).nextDouble() ; //动态接收键盘输入的值
+				double result = 3.14*r*r  ;
+				
+				System.out.println("圆的面积是："+result);
+				
+				//求圆的周长 2*3.14*r
+				System.out.println(  2*3.14*r );
+				
+			} 
+		}
+
+	--8、练习4：变量交换
+		--需求：假设程序中有两个整数a和b ,把a和b的值交换掉
+		package cn.tedu.basic;
+
+		//这个类用来测试  变量值交换
+		public class Test4_Exchange {
+			public static void main(String[] args) {
+				//1、定义变量a和b	 TODO 动态接收键盘输入的值
+				int a = 1 ;
+				int b = 2 ;
+				//前后都需要拼接" + ？ + "
+				System.out.println("交换前：a="+a+"，b="+b);
+				//2、开始交换
+				int c = a ; // 把a的值交给c保存
+				     a =  b ; // 把b的值交给a保存
+				     b =  c ; // 把c的值交给b保存
+				System.out.println("交换后：a="+a+"，b="+b);
+				
+			}
+		}
+
+三、基本类型的字面值（5条）
+	--1、整数字面值是int类型   ，如：int a = 200 ;
+	--2、浮点数的字面值是double类型   ，如：double b = 9.9 ;
+	--3、byte，short，char三种比int小的整数可以用范围内的值直接赋值
+		--如：byte c = 100 ;  //-128~127
+			 char d = 65535 ;//0~65535
+	--4、字面值后缀l f d / L F D 
+		--L是long的缩写，f是float的缩写，d是double的缩写
+		--测试：	
+			//右侧虽然看起来字面值就是int类型，但是，已经超出了int的范围。
+			//还想用，只能加后缀L，从int扩大成long
+			long a = 200000000000L ; 
+			//右侧虽然字面值是double类型，但是，想要变成float类型--只能加后缀F，从double变成float
+			float b = 9.9F ;
+			//右侧的3字面值是int类型，想变成小数3.0 -- 加后缀D / d，从int变成double
+			double c = 3d ;
+	--5、进制前缀(了解即可)
+		--计算机中可以存在多种进制，二进制，八进制 ，十六进制。每种数据都有前缀标志着
+		--0b开始的数据是二进制数据,如：0b0011
+		--0开始的数据是八进制数据,如：076
+		--0x开始的数据是十六进制数据,如：0x0095
+		--\u是char类型的数据,如：\u0000
+		
+四、基本类型的类型转换		
+	--1、从小到大：拿着小类型 给 大类型  赋值 --  能直接赋值！！
+	--2、从大到小：拿着大类型 给 小类型  赋值 -- 不能直接赋值！！需要强转/显示转换
+	--3、测试
+		//类型转换：小类型long  -> 大类型double 
+		//小转大：隐式转换
+		long m = 10 ;
+		double n = m  ; //拿着右侧的小类型m  给 左侧的 大类型n 赋值 --- 能直接赋值！！
+		
+		//大转小：显式转换 / 强制转换  , 大类型float  -> 小类型 int
+		float x = 5 ;
+		int y = (int)x ; //拿着右侧的 大类型 x  给 左侧的 小类型 y 赋值 --- 不能直接赋值！！必须把大类型强制转成小类型
+		
+五、运算规则（5条）
+	--1、浮点数运算不精确	
+		--如：System.out.println(1-0.9);//0.09999999999999998
+	--2、浮点数的特殊值
+		--Infinity 无穷大  3.14/0 
+		--NaN-not a number  0/0.0
+
+[作业]网页版的笔记里2.5的三条规则
+[复习]把Test1_Scope  Test2_Info Test3_Area Test4_Exchange 每个敲5遍
+

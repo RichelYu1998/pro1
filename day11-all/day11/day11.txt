@@ -1,0 +1,270 @@
+一、Object
+	--1、概念：
+		类 Object 是类层次结构的根类。每个类都使用 	Object 作为超类。所有对象（包括数组）都实现这个类的	方法。 
+	--2、创建对象：
+		--Object() 
+	--3、常用方法：
+		--String toString() 
+          返回该对象的字符串表示。 
+		--int hashCode() 
+          返回该对象的哈希码值。 
+        --Class<?> getClass() 
+          返回此 Object 的运行时类。 
+		--boolean equals(Object obj) 
+          指示其他某个对象是否与此对象“相等”。 
+    --4、测试
+		package cn.tedu.api;
+		//这个类用来测试  Object的使用
+		//总结：
+		//1、在打印对象的时候，默认打印的就是地址值(原因是自动调用Object里的toString()..)。但是如果想打印属性值，就需要重写toString()...
+		//2、如果要比较两个对象间的地址值，就可以使用默认的Object提供的方式。但是，如果想要比较对象间的属性值，就需要重写equals()
+		public class Test1_Object {
+			public static void main(String[] args) {
+				// 创建对象测试
+				Student s = new Student("皮皮霞", 20);
+				// 2、需求：想查看对象的属性值，但是不想一个一个去get()
+				// System.out.println( s.getName() + s.getAge() );
+				// 底层默认调用了Object的toString()，默认打印了对象的地址值cn.tedu.api.Student@15db9742
+				// 怎么做，才能 不看地址值 而 看属性值？--重写父类原有的toString()
+				System.out.println(s);// Student [name=皮皮霞, age=20]
+
+				System.out.println(s.hashCode());// 3、用来返回对象的哈希码值--相当于对象在内存中的编号，每个对象编号都不一样。
+
+				Class clazz = s.getClass();// 4、返回该对象的Class类型
+				System.out.println(clazz);// class cn.tedu.api.Student
+
+				Student s2 = new Student("皮皮霞", 20);
+				// 5、equals()：比较两个对象是否相等，默认使用Object提供的==比较
+				System.out.println(s.equals(s2));
+				// == 比较基本类型时，直接比值本身。 比较引用类型时，比较的是地址值。
+				System.out.println(2 == 2);// true
+
+				// 6、需求：别再比较两个对象的地址值了！！需要去比较两个对象间的属性值
+				// 如果两个对象的每个属性值都完全一样，就让equals()认为两个对象是相同的，返回true
+			}
+		}
+		// 创建Student类
+		// class Student extends Object{//1、每个类都继承了Object
+		class Student {
+			// 构造方法
+			public Student() {
+			}
+
+			public Student(String name, int age) {
+				this.name = name;
+				this.age = age;
+			}
+
+			private String name;
+			private int age;
+
+			// get() set() 右键-source-
+			public String getName() {
+				return name;
+			}
+
+			public void setName(String name) {
+				this.name = name;
+			}
+
+			public int getAge() {
+				return age;
+			}
+			public void setAge(int age) {
+				this.age = age;
+			}
+			// 2、想要打印属性值而不是默认的地址值，需要重写Object的toString()
+			// 右键-source-toString()...-ok
+			@Override
+			public String toString() {
+				return "Student [name=" + name + ", age=" + age + "]";
+			}
+			// 3、目前equals比较的是两个对象间的地址值！我想要比较对象间的属性值！！
+			/*
+			@Override
+			public boolean equals(Object obj) {
+				//把参数转成Student类型，是为了同一类型作比较
+				Student param = (Student) obj ;
+				//开始比较，拿着两个对象的属性比较
+				if( this.name == param.name &&  this.age==param.age ) {
+					return  true;//当两个对象的属性值完全相同时，就是同一个对象！！
+				}
+				return false;
+			}*/
+			//右键-source--hashCode() and equals()... ok
+			@Override
+			public boolean equals(Object obj) {
+				if (this == obj)
+					return true;
+				if (obj == null)
+					return false;
+				if (getClass() != obj.getClass())
+					return false;
+				Student other = (Student) obj;
+				if (age != other.age)
+					return false;
+				if (name == null) {
+					if (other.name != null)
+						return false;
+				} else if (!name.equals(other.name))
+					return false;
+				return true;
+			}
+			
+		}
+
+
+
+
+二、 String
+	--1、概念：
+		String 类代表字符串。Java 程序中的所有字符串字面值（如 "abc" ）都作为此类的实例实现。 
+		字符串是常量；它们的值在创建之后不能更改。
+		--源码摘抄：public final class String，是一个最终类不能被继承
+		--源码摘抄：private final char value[];字符串是个常量，因为底层维护了char[]是final的值不能改
+	--2、构造方法
+		--String() 
+        --String(char[] value) 
+	--3、常见方法
+		char charAt(int index) 
+          		返回指定索引处的 char 值。 
+		String concat(String str) 
+		          将指定字符串连接到此字符串的结尾。 
+		boolean contains(CharSequence s)  
+		boolean endsWith(String suffix)  
+				测试此字符串是否以指定的后缀结束。 
+		boolean equals(Object anObject) 
+		          将此字符串与指定的对象比较。 
+		byte[] getBytes()  	
+		int hashCode() 
+		          返回此字符串的哈希码。 
+		int indexOf(String str) 
+		          返回指定子字符串在此字符串中第一次出现处的索引。 
+		boolean isEmpty() 
+		          当且仅当 length() 为 0 时返回 true。 
+		int lastIndexOf(String str) 
+		          返回指定子字符串在此字符串中最右边出现处的索引。 
+		int length() 
+		          返回此字符串的长度。 
+		String replace(char oldChar, char newChar) 
+		          返回一个新的字符串，它是通过用 newChar 替换此字符串中出现的所有 oldChar 得到的。 
+		String[] split(String regex) 
+		          根据给定正则表达式的匹配拆分此字符串。 
+		boolean startsWith(String prefix) 
+		          测试此字符串是否以指定的前缀开始。 
+		String substring(int beginIndex) 
+		          返回一个新的字符串，它是此字符串的一个子字符串。 
+		String substring(int beginIndex, int endIndex) 
+		          返回一个新字符串，它是此字符串的一个子字符串。 
+		char[] toCharArray() 
+		          将此字符串转换为一个新的字符数组。 
+		String toLowerCase()    
+		String toUpperCase()  
+		String trim() 
+		          返回字符串的副本，忽略前导空白和尾部空白。 
+		static String valueOf(int i) 
+		          返回 int 参数的字符串表示形式。 
+	--4、测试
+		package cn.tedu.api;
+
+		import java.util.Arrays;
+
+		//这个类用来测试 字符串：字符串底层维护了一个char[]
+		public class Test2_String {
+			public static void main(String[] args) {
+				//1、创建对象
+				char[] cs = new char[] {'a','b','c'};
+				String s = new String(cs) ; // 触发了含参构造，对象存在堆内存中
+				String s2 = "abc" ;//简写，对象存在 堆内存中的常量池中。常量池高效。相同数据只会存一次。
+				
+				//2、常用方法
+				System.out.println(  s.charAt(1)  );  //  获取指定下标对应的字符 
+				System.out.println(  s.concat("opq")  );// 在原有数据的末尾处 拼接指定字符串
+				System.out.println(  s.contains("bc")  );// 判断是否包含指定的字符串
+				System.out.println(  s.endsWith("c") );// 判断是否以指定的字符串结尾
+				System.out.println(  s.equals("abc") );// 判断是否和指定的字符串  相等
+				System.out.println(  s.hashCode() ); // 获取 字符串在内存中的哈希码值
+				System.out.println(  s.isEmpty() );	// 判断字符串 是否为空
+				System.out.println(  s.length() );   //获取字符串的长度
+				
+				s =  "abcdefa" ; //修改s的值
+				System.out.println(  s.indexOf("a") +"======");// 获取 指定字符串  第一次出现的下标值
+				System.out.println(  s.lastIndexOf("a") );// 获取 指定字符串 最后一次出现的下标值
+				System.out.println(  s.replace('a','1') );//替换字符
+				System.out.println(  s.startsWith("ab") );// 判断是否以指定的前缀开始
+				System.out.println(  s.substring(1) ); // 从指定下标处 开始截取字符串
+				System.out.println(  s.substring(1,5) );//从指定位置开始，到指定位置结束 截取字符串 [1,5)，含头不含尾
+				System.out.println(  s.toLowerCase() );//把字符串全转小写
+				System.out.println(  s.toUpperCase() );//把字符串全转大写
+				
+				s = "    a  c  123     " ; 
+				System.out.println(  s.trim() );  //删除前面和后面的多余空格
+				
+				String num = String.valueOf(123);//把各种其他类型的数据转成String类型
+				
+				s =  "123.abc.xyz" ;
+				//java中有一些特殊的符号 | ？  ， 。  .  如果程序没有正确的解析时，你需要转义  \\
+				String[] strs = s.split("\\.") ;//按照指定的字符串切割
+				System.out.println( Arrays.toString(strs)  );//[123, abc, xyz]
+				
+				char[] cs2 = s.toCharArray() ;
+				System.out.println( Arrays.toString(cs2)  );//[1, 2, 3, ., a, b, c, ., x, y, z]
+			}
+		}
+
+
+
+
+
+三、StringBuilder
+    --1、概念
+    	一个可变的字符序列。优化了字符串操作。
+    --2、构造方法
+   		StringBuilder() 
+          构造一个不带任何字符的字符串生成器，其初始容量为 16 个字符。  	  
+    --3、常见方法
+		StringBuilder append(Object obj) 
+          追加 Object 参数的字符串表示形式。 
+	--4、测试
+		package cn.tedu.api;
+
+		//这个类用来测试  StringBuilder
+		public class Test3_StringBuilder {
+			public static void main(String[] args) {
+				// method();//用+拼接，慢
+				method2();// 用工具拼接，快！！
+			}
+			// 用工具拼接，快！！
+			public static void method2() {
+				String str = "abcdefghijklmnopqrstuvwxyz";
+
+		//		StringBuilder sb = new StringBuilder() ;
+				StringBuffer sb = new StringBuffer() ;
+				// 2、把字符串拼接100次，并打印结果
+				long start = System.currentTimeMillis(); // 计时开始ms
+				for (int i = 0; i < 10000; i++) {
+					sb.append(str)  ; // 通过工具类拼接字符串
+				}
+				long end = System.currentTimeMillis(); // 计时结束ms
+
+				System.out.println(end - start);// 1ms
+			}
+			// 使用+拼接字符串
+			public static void method() {
+				// 1、创建字符串
+				String str = "abcdefghijklmnopqrstuvwxyz";
+
+				String res = ""; // 定义变量，记录拼接结果
+				// 2、把字符串拼接100次，并打印结果
+				long start = System.currentTimeMillis(); // 计时开始ms
+				for (int i = 0; i < 10000; i++) {
+					res = res + str; // 通过+拼接字符串
+				}
+				long end = System.currentTimeMillis(); // 计时结束ms
+
+				System.out.println(end - start);// 3046ms
+			}
+
+		}
+
+    

@@ -1,0 +1,66 @@
+一、for练习：
+	--1、练习2：打印10到0
+		package cn.tedu.fordemo;
+
+		//这个类用来测试  for
+		//for( 开始位置 ; 循环条件 ; 更改条件   ){   循环体  }
+		public class Test1_For {
+			public static void main(String[] args) {
+		//		打印10到0
+				for( int i = 10  ;  i >= 0  ;  i--  ){   
+		//			System.out.println(i);//打印后换行展示
+					System.out.print(i);//在同行展示
+				}
+			}
+		}
+
+	--2、练习3：打印8,88,888,8888,
+		package cn.tedu.fordemo;
+
+		//这个类用来测试  for
+		//for( 开始位置 ; 循环条件 ; 更改条件   ){   循环体  }
+		public class Test1_For {
+			public static void main(String[] args) {
+		//		打印8,88,888,8888,
+				for( int i = 8 ; i <= 8888 ; i=i*10+8   ){  
+					System.out.print( i+"," ); 
+				}
+				
+			}
+		}
+	
+		
+二、嵌套for循环：
+	--1、语法
+		for( 开始位置 ; 循环条件 ; 更改条件   ){  //外循环
+		 	for( 开始位置 ; 循环条件 ; 更改条件   ){ //内循环 
+		 		循环体  
+			}  
+		}
+	--2、入门案例
+		package cn.tedu.fordemo;
+
+		//这个类用来测试 嵌套for
+		public class Test2_For2 {
+			public static void main(String[] args) {
+				//TODO 总结1、外循环执行1次，内循环执行多次
+				//第一次循环，也就是当i=1时，输出了i的值1，并且输出j的所有值1 2 3 4 5 
+				//第二次循环，也就是当i=2时，
+				//第三次循环，也就是当i=3时，
+				for( int i = 1 ; i <= 3 ; i++ ) { //外循环
+					System.out.println(i);
+					
+					for( int  j = 1 ; j <= 5; j++) {//内循环
+						System.out.println(j);
+					}
+				}
+				
+				//TODO 总结2、外循环控制行，内循环控制列
+				
+				
+			}
+		}
+
+
+	--3、练习
+	

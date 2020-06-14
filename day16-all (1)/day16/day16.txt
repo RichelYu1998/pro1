@@ -1,0 +1,218 @@
+一、Map练习：字符串中的字符统计
+	package cn.tedu.map;
+
+	import java.util.HashMap;
+	import java.util.Map;
+	import java.util.Scanner;
+
+	//这个类用来测试 map
+	//字符串中的字符统计
+	public class Test1_Map {
+		public static void main(String[] args) {
+			//1,接受用户输入的字符串
+			String input = new Scanner(System.in).nextLine();
+			//准备map，用来存储数据(a=1,b=2,c=2)
+			Map<Character,Integer> map = new HashMap<>();
+			//2，获取到每个字符
+			for (int i = 0; i < input.length(); i++) {
+				char key = input.charAt(i) ; //根据下标获取对应的 字符
+				//3，把获取到的字符作为key存入map，map里的value存多少呢？
+				//拿着key去map里找value，如果是null就是之前没统计过这个字符改成1。如果以前有值，直接+1就行。
+				Integer value = map.get(key) ; 
+				if(value ==  null) {
+					map.put(key, 1);
+				}else {
+					map.put(key, value+1);
+				}
+			}
+			System.out.println(map);//输出map里的元素
+		}
+	}
+
+二、IDEA开发工具的配置
+	--参考使用手册的图解
+三、多线程
+	--1、多线程是为了解决  提高程序的执行效率或者从根本上提高CPU的执行效率而来。
+		相对来说，目前的程序中，统统都是单线程程序。也就是从头到尾都是一个线程		干活。
+	--2、进程和线程的区别：
+		--进程：就是正在运行的程序。可以打开任务管理器查看。
+				一个软件一个程序的运行可以依赖一个进程或者多个进程。
+		--线程：操作系统能够进行运算调度的最小单位，是进程的实际运作单位。
+				一个软件的运行最少依赖一个进程，一个进程的运行最少依赖一个线程
+				一个进程包含一个线程就是单线程程序，也可以包含多个线程就是多线程程序
+		--关系：
+			进程有独立的存储空间，可以存线程，也可以有多个线程共享的空间、
+			线程有独立空间，线程间暂时无法通信。线程之间也是独立的。
+	--3、并发和并行的区别：
+		--并发是指，多个程序抢占了同一个CPU资源。形成了资源被抢占的现象。例如：秒杀
+		--并行是指，有多个CPU，每个CPU只负责一件事情，没有发生抢占现象
+四、多线程的特点
+	--1、随机性：
+		是指，操作系统的程序执行权，会交给CPU，CPU我们控制不了，全都是操作系统调度的。
+	--2、线程状态
+		新建状态、可运行状态、运行状态、终止状态、阻塞状态。
+五、多线程编程1 -- 继承Thread类
+	--1、创建对象
+		Thread() 
+          		分配新的 Thread 对象。 
+		Thread(Runnable target) 
+		        分配新的 Thread 对象。 
+		Thread(Runnable target, String name) 
+		        分配新的 Thread 对象。 
+		Thread(String name) 
+     		 	分配新的 Thread 对象。 
+	--2、常用方法
+		static Thread currentThread()  
+		long getId() 
+	          返回该线程的标识符。 
+		String getName() 
+		          返回该线程的名称。 
+		void run() 
+		void setName(String name) 
+		          改变线程名称，使之与参数 name 相同 
+		static void sleep(long millis) 
+		void start()  使该线程开始执行
+		void stop() 
+	--3、测试
+		package cn.tedu.thread;
+		//这个类用来测试  多线程编程
+		public class Test1_Thread {
+		    public static void main(String[] args) {
+		        //5、创建线程对象
+		        MyThread target = new MyThread();  //新建状态
+		        MyThread target2 = new MyThread();//ctrl + d复制
+		        //6、开启线程--并执行线程run()里的业务
+		        target.start();//从新建状态变成了可运行状态，等待CPU调度
+		        target2.start();
+		        //7、可以执行业务，但是没有多线程效果，相当于是普通方法调用。
+		        //target.run();
+		        /*
+		        8、多线程执行结果的随机性，由于CPU执行过程不可控，所以会出现随机结果
+		        Thread-0120
+		        Thread-0122
+		        Thread-1130
+		        Thread-0123
+		        Thread-1131
+		        Thread-0124
+		        Thread-0125
+		        */
+		    }
+		}
+		//1、继承Thread
+		class MyThread extends Thread{
+		    //2、把所有的业务放入重写的run()----ctrl + O打开重写功能
+		    @Override
+		    public void run() {
+		//默认的：   super.run();
+		       //3、打印10次线程信息 --  fori提示普通循环
+		        for (int i = 0; i < 10 ; i++) {
+		            //4、sout提示输出语句
+		            System.out.println(getName()+"="+getId()+"="+i);
+		        }
+		    }
+		}
+六、多线程编程2 -- 实现Runnable接口
+	--1、常见方法
+		void run()  
+    --2、测试
+    	package cn.tedu.thread;
+		//这个类用来测试 多线程编程
+		public class Test2_Runnable {
+		    public static void main(String[] args) {
+		        //4、创建线程对象
+		        MyRunnable target = new MyRunnable();
+		        //绑定Runnable接口和Thread类的关系
+		        Thread t1 = new Thread(target) ;//新建状态
+		        Thread t2 = new Thread(target) ;
+		        //设置线程名称--使用默认分配的线程名称Thread-0  Thread-1 ...
+		        t1.setName("美队");
+		        t2.setName("蜘蛛侠");
+
+		        //5、启动线程
+		        t1.start();//可运行状态，等待CPU调度
+		        t2.start();
+
+		        /*多线程程序的随机性
+		        Thread-0===0
+		        Thread-1===0
+		        Thread-0===1
+		        Thread-0===2
+		        Thread-0===3
+		        Thread-1===1
+		        Thread-0===4
+		        Thread-1===2
+		        Thread-1===3
+		        */
+		    }
+		}
+		//1、创建多线程类 implements Runnable
+		class MyRunnable implements Runnable{
+		    //2、把所有的业务，都放入重写的run()
+		    @Override
+		    public void run() {
+		        for (int i = 0; i < 20 ; i++) {
+		            //3、输出线程名称--Thread.currentThread().getName()
+		            System.out.println(Thread.currentThread().getName()+"==="+i);
+		        }
+		    }
+		}
+
+    --3、比较         
+		参考网页笔记1.5.4  
+七、售票案例
+	--1、需求：设计4个售票窗口，总计售票100张。
+	--2、模拟多线程售票
+		package cn.tedu.thread;
+
+		//这个类用来测试 多线程售票
+		//TODO  为什么数据会出错，分析程序？？？
+		//TODO  怎么解决多线程编程中的数据安全隐患？？？
+		//TODO  多操作IDEA
+		public class Test3_Tickts {
+		    public static void main(String[] args) {
+		        //3、创建线程对象
+		        MyTickets t1 = new MyTickets();
+		        MyTickets t2 = new MyTickets();
+		        MyTickets t3 = new MyTickets();
+		        MyTickets t4 = new MyTickets();
+		        t1.start();
+		        t2.start();
+		        t3.start();
+		        t4.start();
+		        //4、问题1：需要是卖100张票，目前卖了400张票。为什么？因为tickets是实例变量
+		        //每次new都会给对象初始化，4个对象，就初始化了4次有了400张票。--怎么解决？
+		        //如果能把tickets变成多个对象间共享的就可以了？--
+		    }
+		}
+		//1、模拟多线程开发
+		class MyTickets extends Thread {
+		    //定义变量，记录100张票
+		//  int tickets = 100; //4.1、实例变量，会new多次就拥有多张票
+		    static  int tickets = 100;//4.2、变量共享资源
+		    //2、开始卖票 ，写进run()
+		    @Override
+		    public void run() {
+		        while (true) {//一直卖票
+		            if (tickets > 0) {
+		                try {
+		                    //5、检查多线程数据有没有安全隐患，最终的大招就是让程序休眠一会10ms
+		                    //问题2多卖：同一张票卖给了多个人
+		                    //问题3超卖：卖出了0号票
+		                    Thread.sleep(10);
+		                } catch (InterruptedException e) {
+		                    e.printStackTrace();
+		                }
+		                System.out.println(getName() + "：" + tickets--);
+		            } else {
+		                break;//票数<=0就结束
+		            }
+		        }
+		    }
+		}
+
+
+	
+	
+
+		
+     	    

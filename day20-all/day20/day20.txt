@@ -1,0 +1,279 @@
+一、排序算法
+	--1、概念
+		所谓排序，就是使一串记录，按照其中的某个或某些关键字的大小，递增或递减的排列起来的操作。排		序算法，就是如何使得记录按照要求排列的方法。排序算法在很多领域得到相当地重视，尤其是在大量		数据的处理方面。一个优秀的算法可以节省大量的资源。
+	--2、常见的算法
+		▪ 冒泡排序
+		▪ 选择排序
+		▪ 快速排序
+		▪ 归并排序
+	--3、冒泡排序
+		--概念：冒泡排序算法是把较小的元素往前调或者把较大的元素往后调。这种方法主要是通过对相邻两个元素				进行大小的比较，根据比较结果和算法规则对该二元素的位置进行交换，这样逐个依次进行比较和					交换，就能达到排序目的。
+		--核心就是：相邻比较，位置交换
+	--4、代码实现
+		package cn.tedu.bubble;
+
+		import java.util.Arrays;
+
+		//这个类用来测试冒泡排序：相邻元素比较  +  交换位置
+		public class Test1_Bubble {
+		    public static void main(String[] args) {
+		        //1、定义无序数组
+		        int[] a = {18, 9, 30, 26, 1};
+		        //2、开始比较：从小到大
+		        //外循环控制轮数，  -1 是因为5个数，只需要比较4轮。i= 0 1 2 3
+		        for (int i = 0; i < a.length - 1; i++) {
+		            //内循环：相邻比较 + 交换位置
+		//for (int j = 0; j < a.length - 1; j++) {
+		// 这样效率低，不能把每轮都固定比较4次。应该每轮都减少比较次数。-0  -1 -2 -3
+		// 优化：-i是因为，第一轮，要比4次。第二轮，要比3次。第三轮，要比2次。第四轮，要比1次
+		            for (int j = 0; j < a.length - 1 - i ; j++) {
+		                if (a[j] > a[j + 1]) {//拿着下标j对应的元素 和  下标 j+1对应的元素  去比
+		                    int t = a[j];
+		                    a[j] = a[j + 1];
+		                    a[j + 1] = t;
+		                }
+		            }
+		            System.out.println(Arrays.toString(a));
+		        }
+		    }
+		}
+
+二、IO释放资源
+	--1、概念：
+		IO里为了资源一定会被释放，通常要写在finally语句块中，但是写起来非常复杂繁琐。		 jdk7的新特性，把IO释放资源过程进行了优化，可以实现IO的自动资源管理。
+	--2、代码测试
+		package cn.tedu.bubble;
+
+		import java.io.*;
+
+		//这个类用来测试IO释放资源
+		public class Test2_IO {
+		    public static void main(String[] args) {
+		//        method();//jdk7.0前
+		        method2();//jdk7.0后
+		    }
+		    //jdk7.0后--try with resources
+		    private static void method2() {
+		        try(
+		            //读取资源
+		            InputStream in = new BufferedInputStream ( new FileInputStream("D:\\iotest\\1.txt")  );
+		            //写出资源
+		            OutputStream out = new BufferedOutputStream (  new FileOutputStream("D:\\iotest\\2.txt")   );
+		           ) {
+		             //边读边写
+		            int b;//记录读取到的数据
+		            while ((b = in.read()) != -1) {
+		                out.write(b);
+		            }
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		    }
+		    //jdk7.0前
+		    private static void method() {
+		        //因为finally里已经变量的作用范围，所以需要把变量的作用范围扩大。
+		        InputStream in = null;
+		        OutputStream out = null;
+		        try {
+		            //读取资源
+		            in = new FileInputStream("D:\\iotest\\1.txt");
+		            //写出资源
+		            out = new FileOutputStream("D:\\iotest\\2.txt");
+		            //边读边写
+		            int b;//记录读取到的数据
+		            while ((b = in.read()) != -1) {
+		                out.write(b);
+		            }
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        } finally {//我有  必须要  执行的代码。
+		            //释放资源  --  怎么保证资源一定会被释放！！！
+		            try {
+		                in.close();
+		            } catch (IOException e) {
+		                e.printStackTrace();
+		            }
+		            try {
+		                out.close();
+		            } catch (IOException e) {
+		                e.printStackTrace();
+		            }
+		        }
+		    }
+		}
+
+	
+三、Collections工具类
+	--1、为Collection集合提供的工具类，提供了丰富的方法
+	--2、常用方法
+		addAll(Collection<? super T> c, T... elements) 
+		          将所有指定元素添加到指定 collection 中。 
+		max(Collection<? extends T> coll) 
+		min(Collection<? extends T> coll) 
+		static void reverse(List<?> list) 
+		sort(List<T> list) 
+		static void swap(List<?> list, int i, int j) 
+		          在指定列表的指定位置处交换元素。            
+	--3、测试
+		package cn.tedu.bubble;
+
+		import java.util.ArrayList;
+		import java.util.Collections;
+		import java.util.List;
+
+		//这个类用来测试 集合工具类 Collections
+		public class Test3_Collection {
+		    public static void main(String[] args) {
+		        List<Integer> list = new ArrayList<>();
+		        //1、没用工具类前，需要一个个往里添加元素
+		//        list.add(1);
+		//        list.add(2);
+		//        list.add(3);
+		        //2、用了工具类，一次性向，指定集合中添加多个元素
+		        Collections.addAll(list,1,2,3,4,5);
+		        System.out.println(list);//[1, 2, 3, 4, 5]
+
+		        System.out.println( Collections.max(list)  );//获取指定集合中的最大值
+		        System.out.println( Collections.min(list)  );//获取指定集合中的最小值
+
+		        Collections.reverse(list);//把指定集合中的元素 反转
+		        Collections.sort(list);//给指定集合排序，从小到大
+		        Collections.swap(list,2,4);//将指定集合中的指定下标元素进行交换
+		        
+		        System.out.println(list);//[1, 2, 5, 4, 3]
+
+		    }
+		}
+
+	
+四、线程池
+	--1、概念：
+		多线程可以提高程序的执行效率，因为提高了CPU的使用率。
+		线程池优化了多线程的操作，比如：线程池提供已经new好的线程，并且会自动回收，后		续你会自己手写线程池。实现线程的复用性。
+	--2、Executors工具类：辅助创建线程池
+		static ExecutorService newCachedThreadPool()  新建带有缓存的线程池
+		static ExecutorService newFixedThreadPool(int nThreads)  新建固定大小的线程池
+		static ExecutorService newSingleThreadExecutor()  创建一个线程 
+	--3、ExecutorService工具类：执行一个或多个异步任务
+		void execute(Runnable command)  在未来某个时间执行给定的命令 
+	--4、测试
+		package cn.tedu.bubble;
+
+		import java.util.concurrent.ExecutorService;
+		import java.util.concurrent.Executors;
+
+		//这个类用来测试 线程池
+		public class Test4_ThreadPool {
+		    public static void main(String[] args) {
+		        //1、创建线程池对象 -- 参数是 线程池的大小(线程数)
+		        ExecutorService pool = Executors.newFixedThreadPool(3);
+		        //2、利用线程池执行线程任务
+		        //execute();//参数需要Runnable接口类型  --  我们直接传入  匿名对象+匿名内部类
+		        for (int i = 0; i < 3; i++) {  //4、循环3次，就会执行3次，因为execute执行了3次。
+		            pool.execute( new Runnable() {
+		                              @Override
+		                              public void run() {
+		                                  for (int i = 0; i < 100 ; i++) {
+		                                      System.out.println(Thread.currentThread().getName()+"==="+i);
+		                                      //3、线程名：
+		                                      //pool-1-thread-3===80   pool-1-thread-2===41  pool-1-thread-1===8
+		                                  }
+		                              }
+		                          }
+		            );
+		        }
+
+		    }
+		}
+
+		
+五、JDK新特性
+	--1.5：自动装箱和拆箱  / 泛型 / foreach循环
+	--1.7：字面值中使用下划线_  / switch 语句支持 String / try-with-resources / catch 多个类型异常 / 泛型类型推断
+	--1.8：Lambda表达式 / 函数式接口 / 接口支持默认方法和静态方法
+	--测试：可变参数
+		package cn.tedu.bubble;
+
+		import java.util.Arrays;
+
+		//这个类用来测试 jdk新特性 -- 可变参数：反射中用到了Class工具类有体现！！
+		public class Test5_Variable {
+		    public static void main(String[] args) {
+		        add(1,2);
+		        add(1,2,3);
+		        add(1,2,3,4,5);
+		    }
+		    //是方法名相同，但是参数列表不同的方法  --  叫方法的重载  --  出现的目的是提高程序的灵活性
+		    //1、...就是可变参数的体现，体现了参数的个数  省略不管。
+		    private static void add(int b,int...a) {//3、可变参数必须是参数列表中的最后一个
+		        //2、可变参数，为什么传入几个参数  a接收呢？---本质上a是数组  --  [I@1b6d3586
+		        System.out.println(a);
+		        System.out.println(Arrays.toString(a));//[1, 2, 3, 4, 5]
+		    }
+
+		}
+ 
+	--测试：Lambda表达式/函数式编程
+		package cn.tedu.bubble;
+
+		//这个类用来测试 Lambda表达式：优化了匿名内部类的编写
+		//概念：
+		//Lambda 表达式（lambda expression）是一个匿名函数，Lambda表达式基于数学中的λ演算得名，直接对应于其中的lambda抽象（lambda abstraction），是一个匿名函数，即没有函数名的函数。
+		//语法：(参数列表) -> {语句或语句块}
+		public class Test6_Lambda {
+		    public static void main(String[] args) {
+		        //2、利用匿名对象  +  匿名内部类，使用接口的功能
+		        Demo d = new Demo(){
+		            @Override
+		            public void save() {
+		                System.out.println("save()...");
+		            }
+		        } ;
+		        d.save();
+		        //3、Lambda表达式优化匿名内部类
+		//      Demo d2 = (参数列表) -> { 方法体  } ;
+		        Demo d2 = () -> {  System.out.println("save()...lambda");  } ;//3.1、Lambda表达式没参数
+		        d2.save();
+
+		        Demo2 demo2 = (int x,int y) -> {  System.out.println(x+y); } ;//4、Lambda表达式有参数
+		        demo2.add(1,2);//4.1、把实参1 和 2 传递给了形参 x 和 y ，并打印求和的结果
+
+		        Demo3 demo3 = (int m,int n)->  { return m+n ;  } ; //5、Lambda表达式有参数 有返回值，通过return把值返回
+		        System.out.println( demo3.add(5,10)  );//5.1、把实参5 和 10 传递给了形参 m 和 n ，求和，并返回结果
+		    }
+		}
+		interface Demo3{
+		    int add(int a,int b);
+		}
+		interface Demo2{
+		    void add(int a,int b) ;
+		}
+		//1、准备接口：Lambda表达式要求接口中，只能有一个抽象方法。
+		interface Demo{
+		    void save ();
+		}
+
+
+
+
+
+
+		
+六、DEBUG程序调试(eclipse)
+	--也叫调试模式，也叫断点模式。专门用来在调试开发阶段排错。
+	--1、在想查看的代码处 打上断点（双击），然后点击上面工具栏的小虫子按钮，开启debug模式。
+	--2、单步向下顺序执行代码  f6
+	--3、想看变量值，把鼠标放在变量身上就可以看。
+	--4、想要结束断点模式，多按几次f8
+	
+七、复习
+	--1、基本语法
+	--2、OOP
+	--3、IO
+	--4、集合
+	--5、反射/泛型/内部类 ==  第二三阶段都要用！！
+	--6、多线程  / 网络编程 == 面试用！！
+
+CGB2004 - 皮皮霞留
+祝好！
+	

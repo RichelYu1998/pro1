@@ -1,0 +1,139 @@
+一、向下转型
+	--1、测试
+		package cn.tedu.multi;
+		//这类用来测试 多态的使用
+		//1、成员变量：由于不存在重写，所以直接使用父类的
+		//2、成员方法：由于存在重写，所以调用了父类的  方法声明  ，使用了  子类的 方法体
+		//3、静态资源：由于不存在重写，所以直接使用父类的  方法声明 和方法体
+		public class Test3_Multi {
+			public static void main(String[] args) {
+				// 创建多态对象测试
+				Fu f= new Zi() ; //父类引用  指向 子类对象
+				//3、编译看左边，只要想用的功能，必须是父类提供的。
+				    //运行看右边，多指发生了方法重写后，使用右边的也就是子类的方法体。
+				//1、成语方法的使用，一定是使用父类的(方法声明)，但是，方法体，由于可以重写，所以用子类的方法体。
+				f.study();  //我爱java，
+				//2、成员变量的使用，一定是使用父类的，由于不存在重写，所以执行的也是父类的。
+				System.out.println( f.name  );  // jack，
+				//3、静态方法，可以存在重写吗？  --  不可以！！！
+		//		f.play();  //由于静态资源根本不存在重写，所以直接执行父类的方法声明和方法体。即使子类有一个和父类一模一样的方法也不是重写！！！
+			
+				//现在子类的功能中，由于方法可以重写，所以多态对象可以用子类的方法体。
+				//但是，子类的属性，怎么用呢？--- 多态肯定是不能用！！！
+				//1、创建子类对象  -- 目的就是想用用子类的特有资源
+				Zi zi = new Zi() ;  System.out.println( zi.name )  ;    zi.sleep()  ;
+				//2、向下转型   ，是指把父类  向下 转型成  子类
+				Zi zi2 = (Zi)  f ;
+				zi2.sleep();
+				System.out.println(   zi2.name );
+			}
+		}
+		class Fu{
+			String name = "jack" ;
+			public void study() {
+				System.out.println("爸爸正在学习");
+			}
+		}
+		class Zi extends Fu{
+			String name = "xiongda" ;
+			//方法重写
+			@Override
+			public void study() {
+				System.out.println("我爱java");
+			}
+			public void sleep() {
+				System.out.println("我爱sleep");
+			}
+		}
+
+二、抽象类的使用
+	--1、构造方法
+		package cn.tedu.abstractdemo;
+
+		//这个类用来测试 抽象类的 使用
+		public class Test1_UseAbstract {
+			public static void main(String[] args) {
+				//创建多态对象测试
+		//			new Animal() ;  //1、抽象类不能被实例化
+				Animal a = new Dog() ; 
+			}
+		}
+		//创建抽象类
+		abstract class Animal{
+			//3、抽象类本身不能创建对象，但是，为什么会提供构造方法？ ---  是为了子类创建对象时调用  ！！
+			public Animal() {	//构造方法
+				System.out.println("Animal  ... 无参构造");
+			}
+		}
+		class Dog extends Animal{
+			public Dog() {
+				//2、子类无参构造中，隐藏着super()
+				super() ;
+				System.out.println(" Dog  ...无参构造");
+			}
+		}
+
+	--2、成员变量
+		package cn.tedu.abstractdemo;
+		//这个类用来测试 抽象类的 使用成员变量
+		public class Test2_UseAbstract {
+			public static void main(String[] args) {
+				//创建多态对象测试
+				Animal2 a = new Dog2();
+				System.out.println(  a.name  );
+				
+				System.out.println( Animal2.COUNTRY );
+			}
+		}
+		//创建抽象类
+		abstract class Animal2{
+			//1、抽象类中可以有成员变量
+			String name = "jack" ;
+			//2、抽象类中可以有常量吗？ -- 可以有
+			static final String COUNTRY  =  "中国" ;
+		}
+		class Dog2 extends Animal2{
+		}
+	--3、成员方法
+		package cn.tedu.abstractdemo;
+		//这个类用来测试 抽象类的 使用成员方法
+		public class Test3_UseAbstract {
+			public static void main(String[] args) {
+				//创建多态对象测试
+				Animal3 an = new Dog3() ;//父类引用 指向 子类对象
+				an.show();//3、普通方法重写或者不重写，看你需不需要修改方法体，不需要时也可以不重写。
+				
+				an.eat();//编译看左边，运行看右边
+				an.play();//4、抽象方法一般都会重写，否则就是一个抽象类了。重写了就用子类的方法体。
+			}
+		}
+		//1、抽象类是一个特殊的类 ，特殊在里面可以有抽象方法和普通方法。(关键看需不需要方法体)
+		abstract class Animal3{
+			abstract public void eat() ;
+			abstract public void play() ;
+			public void show() {
+				System.out.println("show()...");
+			}
+		}
+		//2、子类如果  继承的父类是一个  抽象类。子类两条路：要么重写所有抽象方法，要么抽象的子类
+		//abstract class Dog3 extends Animal3{
+		class Dog3 extends Animal3{
+			@Override//就是一个重写方法的标记 --- 注解！
+			 public void eat() {
+				 System.out.println("eat()...");
+			 }
+			@Override
+			 public void play() {
+				 System.out.println("play()...");
+			 }
+		}
+
+
+
+
+
+
+
+
+三、接口
+	

@@ -1,0 +1,229 @@
+一、数组练习
+	--1、练习2：遍历数组，存入1到10
+		package cn.tedu.array;
+		//这个类用来测试数组
+		public class Test1_Array {
+			public static void main(String[] args) {
+				method();// 遍历数组，存入1到10
+			}
+			
+			public static void method() {
+				// 1、创建数组，动态初始化
+				int a[] = new int[10];
+				
+				// 2、遍历数组，根据下标
+				for (int i = 0 ;  i < a.length ; i++) {
+					// 3、根据下标获取每个数据，修改成1-10
+					a[i] = i+1 ;   //a[i]根据下标i获取a数组里的数据
+				}
+
+				// 4、打印数组的数据(还是需要遍历，输出每个数据)
+				for (int i = 0 ;  i < a.length ; i++) {
+					System.out.println( a[i] );
+				}
+				
+				System.out.println(a);//[I@15db9742地址值
+			}
+		}
+
+	
+	--2、练习3：创建随机数组
+		package cn.tedu.array;
+
+		import java.util.Random;
+
+		//这个类用来测试数组
+		public class Test1_Array {
+			public static void main(String[] args) {
+				method();// 遍历数组，存入1到10
+				method2();//创建数组，存入随机数
+			}
+			public static void method2() {
+				// 1、创建数组，动态初始化
+				int a[] = new int[5];
+				
+				// 2、遍历数组，根据下标
+				for (int i = 0; i < a.length; i++) {
+					// 3、根据下标获取每个数据，修改成1-10
+					a[i] = new Random().nextInt(100) ;
+				}
+				
+				// 4、打印数组的数据(还是需要遍历，输出每个数据)
+				for (int i = 0; i < a.length; i++) {
+					System.out.println( a[i] );
+				}
+				
+			}
+			public static void method() {
+				// 1、创建数组，动态初始化
+				int a[] = new int[10];
+				
+				// 2、遍历数组，根据下标
+				for (int i = 0 ;  i < a.length ; i++) {
+					// 3、根据下标获取每个数据，修改成1-10
+					a[i] = i+1 ;   //a[i]根据下标i获取a数组里的数据
+				}
+
+				// 4、打印数组的数据(还是需要遍历，输出每个数据)
+				for (int i = 0 ;  i < a.length ; i++) {
+					System.out.println( a[i] );
+				}
+				
+				System.out.println(a);//[I@15db9742地址值
+			}
+		}
+
+二、数组工具类Arrays
+	--1、针对数组的相关操作，提供了一系列的支持(一堆方法)
+	--2、常用方法：
+		--toString()：把数组的数据变成字符串展示
+		--sort()：把无序数组排序
+		--copyOf()：复制数组
+	--3、测试：
+		package cn.tedu.arrays;
+		import java.util.Arrays;
+		//这类用来测试 数组工具类Arrays
+		//sort()为什么没有返回值
+		//copyOf()为什么有返回值：因为数组一旦创建，长度不能变！！
+		public class Test2_Arrays {
+			public static void main(String[] args) {
+				// method(); //toString()把数组的数据变成字符串展示
+				// method2(); //sort()：把无序数组排序，从小打大
+				method3(); // copyOf()：复制数组
+			}
+			public static void method3() {
+				//创建原数组
+				int a[] = {1,2,3,4,5,6};
+				//copyOf(m,n)--m是原数组名，n是新数组长度
+				//其中，第二个参数n，如果新数组的长度>原数组长度，相当于在扩充新位置  ---  扩容
+				//如果新数组的长度<原数组的长度，相当于在截取数据  --- 缩容
+				int[] b = Arrays.copyOf(a, 10) ;
+				int[] c  = Arrays.copyOf(a, 3);
+				
+				//[1, 2, 3, 4, 5, 6, 0, 0, 0, 0]
+				System.out.println(   Arrays.toString(b)  );//查看b的数据
+				//[1, 2, 3]
+				System.out.println(   Arrays.toString(c)  );
+			}
+			public static void method2() {
+				int[] a = { 9, 3, 7, 1, 8 };
+				// 自定义排序算法-- 冒泡排序/快速排序/合并排序
+				Arrays.sort(a);
+
+				System.out.println(Arrays.toString(a));// [1, 3, 7, 8, 9]
+			}
+			public static void method() {
+				int[] a = { 1, 2, 3, 4, 5 };
+				// 以前想看数组里的数据 只能遍历
+				for (int i = 0; i < a.length; i++) {
+					System.out.println(a[i]);
+				}
+				// 现在 - 使用数组工具类Arrays.toString(a) -- 把a数组中的所有数据转成字符串展示
+				System.out.println(Arrays.toString(a)); // [1, 2, 3, 4, 5]
+			}
+		}
+
+
+
+三、OOP
+	--1、类和对象的创建
+		package cn.tedu.oop;
+
+		//这类用来 测试 类和对象的创建
+		//一个.java源文件中，可以包含多个类。但是，只能有一个类被public修饰，而且这个public的类名就是文件名。
+		public class Test3_OOP {
+			public static void main(String[] args) {
+				//4、通过new创建对象测试手机类
+				Phone p = new Phone() ;  //对象的名字就是p，是一个引用类型的变量。存对象的地址值
+				//5、调用模板里的 方法
+				p.call();
+				p.message();
+				p.music();
+				//5.1、修改属性值
+				p.color = "red" ;
+				p.size = 5.7;
+				p.pinpai = "HUAWEI" ;
+				p.price = 5899.8  ;
+				//6、调用模板里的 属性  
+				System.out.println( p.color  );
+				System.out.println( p.size  );
+				System.out.println( p.pinpai  );
+				System.out.println( p.price  );
+			}
+		}
+		// 1、通过class创建手机类 描述手机事物。类是抽象的，可以理解为设计图纸
+		class Phone {
+			// 2、特征：成员变量(类里方法外)
+			String color; // 颜色
+			double size; // 尺寸
+			String pinpai; // 品牌
+			double price; // 价格
+			// 3、 行为：成员方法
+			// 打电话
+			public void call() {
+				System.out.println("call()...");
+			}
+			// 发短信
+			public void message() {
+				System.out.println("message()...");
+			}
+			// 听音乐
+			public void music() {
+				System.out.println("music()...");
+			}
+		}
+
+	--2、创建多个对象
+		package cn.tedu.oop;
+
+		//这个类用来测试  创建多对象
+		public class Test4_OOP {
+			public static void main(String[] args) {
+				// 2、创建对象测试
+				Car c = new Car();
+				// 3、调用模板里的功能
+				c.start();
+				c.stop();
+				// 4、设置属性的值
+				c.color = "red";
+				c.price = 10;
+				c.pinpai = "BMW";
+				System.out.println(c.color);
+				System.out.println(c.price);
+				System.out.println(c.pinpai);
+
+				//5、创建多个对象
+				Car c2 = new Car();
+				c2.start();
+				c2.stop();
+				c2.color = "blue";
+				c2.price = 20;
+				c2.pinpai = "AUDI";
+				System.out.println(c2.color);
+				System.out.println(c2.price);
+				System.out.println(c2.pinpai);
+
+				//地址值一样吗？c是自己new的，c2也是自己new的  -- 肯定不同！！
+				System.out.println(c);//cn.tedu.oop.Car@15db9742
+				System.out.println(c2);//cn.tedu.oop.Car@6d06d69c
+			}
+		}
+
+		// 1、创建汽车类，用来描述汽车事物
+		class Car {
+			// 特征 : 成员变量
+			String color;
+			double price;
+			String pinpai;
+
+			// 行为
+			public void start() {
+				System.out.println("start()...");
+			}
+
+			public void stop() {
+				System.out.println("stop()...");
+			}
+		}
+
+	
